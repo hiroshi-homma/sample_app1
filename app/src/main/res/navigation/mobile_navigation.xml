@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_topic">
+
+    <show_hide_fragment
+        android:id="@+id/navigation_topic"
+        android:name="com.example.news.ui.topic.TopicFragment"
+        android:label="@string/title_topic"
+        tools:layout="@layout/fragment_topic" />
+
+    <show_hide_fragment
+        android:id="@+id/navigation_followed"
+        android:name="com.example.news.ui.followed.FollowedFragment"
+        android:label="@string/title_followed"
+        tools:layout="@layout/fragment_followed" />
+
+</navigation>
