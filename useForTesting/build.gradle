@@ -26,17 +26,4 @@ android {
 
 dependencies {
     implementation project(":data")
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'junit:junit:4.13.1'
-    implementation "androidx.arch.core:core-testing:2.1.0"
-
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
-
-    // Lifecycles
-    def lifecycleVersion = "2.2.0"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
 }
