@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
@@ -10,13 +10,13 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.mynews"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -41,18 +41,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':domain')
-    implementation project(':data')
     implementation project(':component:core')
-    implementation project(':component:followed')
-    implementation project(':component:topic')
-    testImplementation project(':useForTesting')
-
-    implementation "androidx.core:core-ktx:$core_ktx"
-    implementation "com.google.android.material:material:$material"
 
     // android Support Library
+    implementation "androidx.core:core-ktx:$core_ktx"
+    implementation "com.google.android.material:material:$material"
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
     implementation "androidx.recyclerview:recyclerview:$recyclerView"

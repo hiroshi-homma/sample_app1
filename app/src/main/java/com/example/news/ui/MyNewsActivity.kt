@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.core.databinding.ActivityMyNewsBinding
 import com.example.news.R.id
 import com.example.news.R.layout
-import com.example.news.databinding.ActivityMyNewsBinding
 import dagger.android.support.DaggerAppCompatActivity
 
 class MyNewsActivity : DaggerAppCompatActivity() {

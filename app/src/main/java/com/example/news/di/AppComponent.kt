@@ -1,12 +1,12 @@
 package com.example.news.di
 
 import android.app.Application
+import com.example.followed.FollowedModule
 import com.example.news.MainApplication
+import com.example.topic.TopicModule
 import com.kotlin.project.data.di.NetworkModule
 import com.kotlin.project.data.di.RepositoryModule
 import com.kotlin.project.domain.di.UseCaseModule
-import com.example.news.ui.followed.FollowedModule
-import com.example.news.ui.topic.TopicModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector

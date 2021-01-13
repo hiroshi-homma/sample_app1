@@ -33,12 +33,3 @@ class MyFragmentFactory @Inject constructor(
         return super.instantiate(classLoader, className)
     }
 }
-
-@Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER
-)
-@Retention(value = AnnotationRetention.RUNTIME)
-@MapKey
-internal annotation class FragmentKey(val value: KClass<out Fragment>)
