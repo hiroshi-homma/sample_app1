@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.kotlin.project.data.model.MyNewsStatus
 import com.kotlin.project.data.model.Result
 import com.kotlin.project.data.model.Section
-import com.kotlin.project.data.model.Sections
 import com.kotlin.project.domain.usecase.GetMyNewsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

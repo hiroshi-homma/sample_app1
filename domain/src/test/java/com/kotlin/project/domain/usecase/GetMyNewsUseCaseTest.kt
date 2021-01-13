@@ -1,7 +1,6 @@
 package com.kotlin.project.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.kotlin.project.data.model.MyNewsError
 import com.kotlin.project.data.model.Sections
 import com.kotlin.project.data.model.data
 import com.kotlin.project.data.repository.GetMyNewsRepository
@@ -11,7 +10,6 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule

@@ -7,6 +7,4 @@ import javax.inject.Inject
 
 class FollowedViewModel @Inject constructor(
     application: Application
-) : AndroidViewModel(application), LifecycleObserver {
-
-}
+) : AndroidViewModel(application), LifecycleObserver
