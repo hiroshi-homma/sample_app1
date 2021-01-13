@@ -1,6 +1,5 @@
 package com.example.core.utils
 
-import android.content.res.Resources
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,15 +20,3 @@ fun SwipeRefreshLayout.isRefresh(timeLineStatus: MyNewsStatus?) {
     timeLineStatus ?: return
     isRefreshing = timeLineStatus == MyNewsStatus.RELOADING
 }
-
-@BindingAdapter("widthDp", "heightDp")
-fun setHeightDp(view: View, widthDp: Int?, heightDp: Int?) {
-    val width = widthDp?.toPx() ?: return
-    val height = heightDp?.toPx() ?: return
-    val layoutParams = view.layoutParams
-    layoutParams.width = width
-    layoutParams.height = height
-    view.layoutParams = layoutParams
-}
-
-fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
