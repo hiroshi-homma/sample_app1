@@ -7,6 +7,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
+import com.example.news.R
 
 @Navigator.Name("show_hide_fragment")
 class ShowHideFragmentNavigator(
@@ -23,24 +24,40 @@ class ShowHideFragmentNavigator(
     ): NavDestination? {
         val tag = destination.id.toString()
         val transaction = manager.beginTransaction()
-        val className = destination.className
-        val selectedFragment = manager.primaryNavigationFragment
-        if (selectedFragment != null) {
-            transaction.hide(selectedFragment)
+        transaction.setCustomAnimations(
+            R.anim.nav_default_enter_anim,
+            R.anim.nav_default_exit_anim,
+            R.anim.nav_default_pop_enter_anim,
+            R.anim.nav_default_pop_exit_anim
+        )
+
+        var initialNavigate = false
+        val currentFragment = manager.primaryNavigationFragment
+        if (currentFragment != null) {
+            if (currentFragment.javaClass.name == destination.className) {
+                return null
+            }
+            transaction.hide(currentFragment)
+        } else {
+            initialNavigate = true
         }
 
         var fragment = manager.findFragmentByTag(tag)
         if (fragment == null) {
+            val className = destination.className
             fragment = manager.fragmentFactory.instantiate(context.classLoader, className)
             transaction.add(containerId, fragment, tag)
         } else {
             transaction.show(fragment)
         }
 
-        transaction.addToBackStack(tag)
         transaction.setPrimaryNavigationFragment(fragment)
-        transaction.commit()
+        transaction.commitNow()
 
-        return destination
+        return if (initialNavigate) {
+            destination
+        } else {
+            null
+        }
     }
 }
