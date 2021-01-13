@@ -53,21 +53,8 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     // android Support Library
-    implementation "androidx.appcompat:appcompat:$appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
-    implementation "androidx.recyclerview:recyclerview:$recyclerView"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayout"
-    implementation "androidx.viewpager2:viewpager2:$viewPager2"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
-
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
-
-    // Kotlin Coroutine
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$daggerVersion"
