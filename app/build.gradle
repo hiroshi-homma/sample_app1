@@ -44,9 +44,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':domain')
     implementation project(':data')
-    implementation project(':component:core')
-    implementation project(':component:followed')
-    implementation project(':component:topic')
+    implementation project(':feature:core')
+    implementation project(':feature:followed')
+    implementation project(':feature:topic')
     testImplementation project(':useForTesting')
 
     implementation "androidx.core:core-ktx:$core_ktx"
