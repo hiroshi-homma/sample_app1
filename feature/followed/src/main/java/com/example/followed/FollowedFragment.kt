@@ -16,7 +16,7 @@ class FollowedFragment @Inject constructor() : Fragment() {
     lateinit var factory: ViewModelProvider.Factory
     private val followedViewModel: FollowedViewModel by viewModels { factory }
 
-    private lateinit var binding : FragmentFollwedBinding
+    private lateinit var binding: FragmentFollwedBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -3,7 +3,6 @@ package com.example.news
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.FragmentFactory
-import androidx.navigation.fragment.NavHostFragment
 import com.example.news.navigation.ShowHideNavHostFragment
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
