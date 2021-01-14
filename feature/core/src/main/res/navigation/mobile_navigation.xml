@@ -8,13 +8,11 @@
     <show_hide_fragment
         android:id="@+id/navigation_topic"
         android:name="com.example.topic.TopicFragment"
-        android:label="@string/title_topic"
-        tools:layout="@layout/fragment_topic" />
+        android:label="@string/title_topic"/>
 
     <show_hide_fragment
         android:id="@+id/navigation_followed"
         android:name="com.example.followed.FollowedFragment"
-        android:label="@string/title_followed"
-        tools:layout="@layout/fragment_followed" />
+        android:label="@string/title_followed"/>
 
 </navigation>
