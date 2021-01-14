@@ -43,24 +43,24 @@ class TopicViewModel @Inject constructor(
     }
 
     fun insertFollowData(followData: FollowData) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.insert(followData)
         }
     }
 
     fun deleteFollowData(followData: FollowData) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.delete(followData)
         }
     }
 
     fun deleteFollowDataForId(id: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.deleteForId(id)
         }
     }
 
-    private fun fetchFollowData() {
+    fun fetchFollowData() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val r = followDataUseCase.getAll()) {
                 is Result.Success -> {
@@ -79,7 +79,7 @@ class TopicViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (val r = getMyNewsUseCase.getNews()) {
                 is Result.Success -> {
-                    _sections.postValue(r.data.sections)
+                    if (_sections.value == null) _sections.postValue(r.data.sections)
                     _uiState.emit(MyNewsStatus.SUCCESS)
                 }
                 is Result.Error -> {

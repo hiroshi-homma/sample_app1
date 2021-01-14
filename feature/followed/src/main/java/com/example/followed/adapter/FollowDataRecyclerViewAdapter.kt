@@ -10,6 +10,7 @@ import com.example.followed.adapter.FollowDataRecyclerViewAdapter.FollowDataHold
 import com.example.followed.databinding.ItemFollowDataViewBinding
 import com.kotlin.project.data.entities.FollowData
 import com.kotlin.project.data.entities.transform
+import timber.log.Timber
 import javax.inject.Inject
 
 class FollowDataRecyclerViewAdapter @Inject constructor(
@@ -33,21 +34,33 @@ class FollowDataRecyclerViewAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: FollowDataHolder, position: Int) {
         holder.binding.hit = followData[position].transform()
+        val ids = followedViewModel.ids.value ?: listOf()
+        val isFollowed = ids.contains(followData[position].id)
         holder.binding.checkFollow.apply {
+            isSelected = if (isFollowed) {
+                setImageResource(R.drawable.ic_baseline_check_circle_24)
+                true
+            } else {
+                setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+                false
+            }
             setOnClickListener {
                 isSelected = !isSelected
                 when {
                     isSelected -> {
+                        setImageResource(R.drawable.ic_baseline_check_circle_24)
+                        Timber.d("check_data_insert:${followData[position]}")
+                        followedViewModel.insertFollowData(followData[position])
+                    }
+                    else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                         followData[position].id?.let {
+                            Timber.d("check_data_delete:${followData[position]}")
                             followedViewModel.deleteFollowDataForId(it)
                         }
                     }
-                    else -> {
-                        setImageResource(R.drawable.ic_baseline_check_circle_24)
-                        followedViewModel.insertFollowData(followData[position])
-                    }
                 }
+                followedViewModel.checkData()
             }
         }
     }
