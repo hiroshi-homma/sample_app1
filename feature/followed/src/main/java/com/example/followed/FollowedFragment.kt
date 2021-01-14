@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.core.databinding.FragmentFollowedBinding
 import com.example.followed.adapter.FollowDataRecyclerViewAdapter
+import com.example.followed.databinding.FragmentFollowedBinding
 import javax.inject.Inject
 
 class FollowedFragment @Inject constructor() : Fragment() {

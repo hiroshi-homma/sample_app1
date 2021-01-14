@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.core.databinding.FragmentTopicBinding
 import com.example.topic.adapter.SectionRecyclerViewAdapter
+import com.example.topic.databinding.FragmentTopicBinding
 import javax.inject.Inject
 
 class TopicFragment @Inject constructor() : Fragment() {
