@@ -54,16 +54,17 @@ class HitRecyclerViewAdapter @Inject constructor(
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
                         val e = hits[position].transformForInsert(sectionTitle, groupTitle)
                         topicViewModel.insertFollowData(e)
-                        Timber.d("check_data_insert")
+                        Timber.d("check_data_insert:$e")
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                         hits[position].id?.let {
                             topicViewModel.deleteFollowDataForId(it)
+                            Timber.d("check_data_delete:$it")
                         }
-                        Timber.d("check_data_delete")
                     }
                 }
+                topicViewModel.fetchFollowData()
             }
         }
     }

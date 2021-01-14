@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kotlin.project.data.entities.FollowData
 import com.kotlin.project.data.model.MyNewsStatus
@@ -28,8 +29,12 @@ class FollowedViewModel @Inject constructor(
     private val _followDataList = MediatorLiveData<List<FollowData>>()
     val followDataList: LiveData<List<FollowData>> = _followDataList
 
+    private val _ids = MutableLiveData<List<String?>>()
+    val ids: LiveData<List<String?>> = _ids
+
     init {
         fetchData()
+        checkData()
     }
 
     fun insertFollowData(followData: FollowData) {
@@ -45,7 +50,7 @@ class FollowedViewModel @Inject constructor(
     }
 
     fun deleteFollowDataForId(id: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.deleteForId(id)
         }
     }
@@ -55,6 +60,20 @@ class FollowedViewModel @Inject constructor(
             when (val r = followDataUseCase.getAll()) {
                 is Result.Success -> {
                     _followDataList.postValue(r.data)
+                    _uiState.emit(MyNewsStatus.SUCCESS)
+                }
+                is Result.Error -> {
+                    _uiState.emit(MyNewsStatus.ERROR)
+                }
+            }
+        }
+    }
+
+    fun checkData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val r = followDataUseCase.getAll()) {
+                is Result.Success -> {
+                    _ids.postValue(r.data.map { it.id })
                     _uiState.emit(MyNewsStatus.SUCCESS)
                 }
                 is Result.Error -> {
