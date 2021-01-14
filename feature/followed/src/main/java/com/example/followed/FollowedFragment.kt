@@ -34,8 +34,13 @@ class FollowedFragment @Inject constructor() : Fragment() {
 
     private fun observe() {
         followedViewModel.followDataList.observe(viewLifecycleOwner) { followData ->
-            binding.sectionRecyclerView.adapter =
-                FollowDataRecyclerViewAdapter(followData, followedViewModel)
+            binding.apply {
+                progressBar.visibility = View.GONE
+                sectionRecyclerView.apply {
+                    visibility = View.VISIBLE
+                    adapter = FollowDataRecyclerViewAdapter(followData, followedViewModel)
+                }
+            }
         }
     }
 }

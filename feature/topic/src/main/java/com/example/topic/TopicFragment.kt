@@ -34,8 +34,13 @@ class TopicFragment @Inject constructor() : Fragment() {
 
     private fun observe() {
         topicViewModel.sections.observe(viewLifecycleOwner) { sections ->
-            binding.sectionRecyclerView.adapter =
-                SectionRecyclerViewAdapter(sections, topicViewModel)
+            binding.apply {
+                progressBar.visibility = View.GONE
+                sectionRecyclerView.apply {
+                    visibility = View.VISIBLE
+                    adapter = SectionRecyclerViewAdapter(sections, topicViewModel)
+                }
+            }
         }
     }
 }
