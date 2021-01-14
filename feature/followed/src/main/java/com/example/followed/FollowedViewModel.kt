@@ -9,13 +9,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kotlin.project.data.entities.FollowData
 import com.kotlin.project.data.model.MyNewsStatus
-import com.kotlin.project.data.model.MyNewsStatus.LOADING
 import com.kotlin.project.data.model.Result
 import com.kotlin.project.domain.usecase.FollowDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class FollowedViewModel @Inject constructor(
@@ -23,7 +23,7 @@ class FollowedViewModel @Inject constructor(
     private val followDataUseCase: FollowDataUseCase
 ) : AndroidViewModel(application), LifecycleObserver {
 
-    private val _uiState = MutableStateFlow<MyNewsStatus>(LOADING)
+    private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
     val uiState: StateFlow<MyNewsStatus> = _uiState
 
     private val _followDataList = MediatorLiveData<List<FollowData>>()
@@ -34,6 +34,11 @@ class FollowedViewModel @Inject constructor(
 
     init {
         fetchData()
+        checkData()
+    }
+
+    fun onRefresh() {
+        fetchData(true)
         checkData()
     }
 
@@ -55,7 +60,8 @@ class FollowedViewModel @Inject constructor(
         }
     }
 
-    private fun fetchData() {
+    private fun fetchData(isPullToRefresh: Boolean = false) {
+        _uiState.value = if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING
         viewModelScope.launch(Dispatchers.IO) {
             when (val r = followDataUseCase.getAll()) {
                 is Result.Success -> {
@@ -74,10 +80,9 @@ class FollowedViewModel @Inject constructor(
             when (val r = followDataUseCase.getAll()) {
                 is Result.Success -> {
                     _ids.postValue(r.data.map { it.id })
-                    _uiState.emit(MyNewsStatus.SUCCESS)
                 }
                 is Result.Error -> {
-                    _uiState.emit(MyNewsStatus.ERROR)
+                    Timber.d("check_error:${r.myNewsError}")
                 }
             }
         }

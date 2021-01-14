@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class TopicViewModel @Inject constructor(
@@ -38,6 +39,11 @@ class TopicViewModel @Inject constructor(
     val ids: LiveData<List<String?>> = _ids
 
     init {
+        fetchData()
+        fetchFollowData()
+    }
+
+    fun onRefresh() {
         fetchData()
         fetchFollowData()
     }
@@ -66,16 +72,16 @@ class TopicViewModel @Inject constructor(
                 is Result.Success -> {
                     _ids.postValue(r.data.map { it.id })
                     _followData.postValue(r.data)
-                    _uiState.emit(MyNewsStatus.SUCCESS)
                 }
                 is Result.Error -> {
-                    _uiState.emit(MyNewsStatus.ERROR)
+                    Timber.d("check_error:${r.myNewsError}")
                 }
             }
         }
     }
 
-    private fun fetchData() {
+    private fun fetchData(isPullToRefresh: Boolean = false) {
+        _uiState.value = if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING
         viewModelScope.launch(Dispatchers.IO) {
             when (val r = getMyNewsUseCase.getNews()) {
                 is Result.Success -> {
