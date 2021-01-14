@@ -7,6 +7,9 @@
 
         <import type="com.kotlin.project.data.model.MyNewsStatus" />
 
+        <variable
+            name="viewModel"
+            type="com.example.topic.TopicViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

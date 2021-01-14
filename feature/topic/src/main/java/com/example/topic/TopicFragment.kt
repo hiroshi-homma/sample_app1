@@ -7,8 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.topic.adapter.SectionRecyclerViewAdapter
 import com.example.topic.databinding.FragmentTopicBinding
+import com.kotlin.project.data.model.MyNewsStatus
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TopicFragment @Inject constructor() : Fragment() {
@@ -32,6 +37,15 @@ class TopicFragment @Inject constructor() : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            this.swipeRefresh.setOnRefreshListener {
+                topicViewModel.onRefresh()
+            }
+        }
+    }
+
     private fun observe() {
         topicViewModel.sections.observe(viewLifecycleOwner) { sections ->
             binding.apply {
@@ -39,6 +53,16 @@ class TopicFragment @Inject constructor() : Fragment() {
                 sectionRecyclerView.apply {
                     visibility = View.VISIBLE
                     adapter = SectionRecyclerViewAdapter(sections, topicViewModel)
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            topicViewModel.uiState.collect { state ->
+                when (state) {
+                    is MyNewsStatus.SUCCESS -> binding.swipeRefresh.isRefreshing = false
+                    is MyNewsStatus.LOADING -> binding.swipeRefresh.isRefreshing = false
+                    else -> binding.swipeRefresh.isRefreshing = true
                 }
             }
         }
