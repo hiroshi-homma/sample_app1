@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.followed.databinding.FragmentFollwedBinding
+import com.example.core.databinding.FragmentFollowedBinding
+import com.example.followed.adapter.FollowDataRecyclerViewAdapter
 import javax.inject.Inject
 
 class FollowedFragment @Inject constructor() : Fragment() {
@@ -16,17 +17,25 @@ class FollowedFragment @Inject constructor() : Fragment() {
     lateinit var factory: ViewModelProvider.Factory
     private val followedViewModel: FollowedViewModel by viewModels { factory }
 
-    private lateinit var binding: FragmentFollwedBinding
+    private lateinit var binding: FragmentFollowedBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFollwedBinding.inflate(inflater, container, false).apply {
+        binding = FragmentFollowedBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
         lifecycle.addObserver(followedViewModel)
+        observe()
         return binding.root
+    }
+
+    private fun observe() {
+        followedViewModel.followDataList.observe(viewLifecycleOwner) { followData ->
+            binding.sectionRecyclerView.adapter =
+                FollowDataRecyclerViewAdapter(followData, followedViewModel)
+        }
     }
 }

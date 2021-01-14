@@ -1,6 +1,9 @@
 package com.kotlin.project.domain.di
 
+import com.kotlin.project.data.repository.FollowedDataRepository
 import com.kotlin.project.data.repository.GetMyNewsRepository
+import com.kotlin.project.domain.usecase.FollowDataUseCase
+import com.kotlin.project.domain.usecase.FollowDataUseCaseImpl
 import com.kotlin.project.domain.usecase.GetMyNewsUseCase
 import com.kotlin.project.domain.usecase.GetMyNewsUseCaseImpl
 import dagger.Module
@@ -14,5 +17,12 @@ class UseCaseModule {
         getMyNewsRepository: GetMyNewsRepository
     ): GetMyNewsUseCase {
         return GetMyNewsUseCaseImpl(getMyNewsRepository)
+    }
+
+    @Provides
+    fun provideFollowDataUseCase(
+        followedDataRepository: FollowedDataRepository
+    ): FollowDataUseCase {
+        return FollowDataUseCaseImpl(followedDataRepository)
     }
 }

@@ -20,4 +20,8 @@ class MyNewsActivity : DaggerAppCompatActivity() {
         val navController = navHostFragment.navController
         binding.navView.setupWithNavController(navController)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }
