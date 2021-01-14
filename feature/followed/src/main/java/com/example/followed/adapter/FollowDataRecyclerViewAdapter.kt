@@ -10,7 +10,6 @@ import com.example.followed.adapter.FollowDataRecyclerViewAdapter.FollowDataHold
 import com.example.followed.databinding.ItemFollowDataViewBinding
 import com.kotlin.project.data.entities.FollowData
 import com.kotlin.project.data.entities.transform
-import timber.log.Timber
 import javax.inject.Inject
 
 class FollowDataRecyclerViewAdapter @Inject constructor(
@@ -49,13 +48,11 @@ class FollowDataRecyclerViewAdapter @Inject constructor(
                 when {
                     isSelected -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
-                        Timber.d("check_data_insert:${followData[position]}")
                         followedViewModel.insertFollowData(followData[position])
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                         followData[position].id?.let {
-                            Timber.d("check_data_delete:${followData[position]}")
                             followedViewModel.deleteFollowDataForId(it)
                         }
                     }

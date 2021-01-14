@@ -10,7 +10,6 @@ import com.example.topic.adapter.HitRecyclerViewAdapter.HitHolder
 import com.example.topic.databinding.ItemHitViewBinding
 import com.kotlin.project.data.model.Hit
 import com.kotlin.project.data.model.transformForInsert
-import timber.log.Timber
 import javax.inject.Inject
 
 class HitRecyclerViewAdapter @Inject constructor(
@@ -54,13 +53,11 @@ class HitRecyclerViewAdapter @Inject constructor(
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
                         val e = hits[position].transformForInsert(sectionTitle, groupTitle)
                         topicViewModel.insertFollowData(e)
-                        Timber.d("check_data_insert:$e")
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                         hits[position].id?.let {
                             topicViewModel.deleteFollowDataForId(it)
-                            Timber.d("check_data_delete:$it")
                         }
                     }
                 }
