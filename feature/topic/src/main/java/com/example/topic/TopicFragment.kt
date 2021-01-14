@@ -34,7 +34,8 @@ class TopicFragment @Inject constructor() : Fragment() {
 
     private fun observe() {
         topicViewModel.sections.observe(viewLifecycleOwner) { sections ->
-            binding.sectionRecyclerView.adapter = SectionRecyclerViewAdapter(sections)
+            binding.sectionRecyclerView.adapter =
+                SectionRecyclerViewAdapter(sections, topicViewModel)
         }
     }
 }

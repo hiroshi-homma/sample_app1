@@ -6,6 +6,7 @@ import com.example.news.MainApplication
 import com.example.topic.TopicModule
 import com.kotlin.project.data.di.NetworkModule
 import com.kotlin.project.data.di.RepositoryModule
+import com.kotlin.project.data.di.RoomModule
 import com.kotlin.project.domain.di.UseCaseModule
 import dagger.BindsInstance
 import dagger.Component
@@ -29,7 +30,8 @@ import javax.inject.Singleton
         UseCaseModule::class,
         // data
         RepositoryModule::class,
-        NetworkModule::class
+        NetworkModule::class,
+        RoomModule::class
     ]
 )
 interface AppComponent : AndroidInjector<MainApplication> {
