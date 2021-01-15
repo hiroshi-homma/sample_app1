@@ -11,6 +11,8 @@ interface FollowDataUseCase {
     suspend fun insert(followData: FollowData)
     suspend fun delete(followData: FollowData)
     suspend fun deleteForId(id: String)
+    suspend fun updateIsFollowed(id: String, isFollowed: Boolean)
+    suspend fun deleteAll()
 }
 
 class FollowDataUseCaseImpl @Inject constructor(
@@ -28,4 +30,9 @@ class FollowDataUseCaseImpl @Inject constructor(
     override suspend fun delete(followData: FollowData) = followedDataRepository.delete(followData)
 
     override suspend fun deleteForId(id: String) = followedDataRepository.deleteForId(id)
+
+    override suspend fun updateIsFollowed(id: String, isFollowed: Boolean) =
+        followedDataRepository.upDateIsFollowedForId(id, isFollowed)
+
+    override suspend fun deleteAll() = followedDataRepository.deleteAll()
 }
