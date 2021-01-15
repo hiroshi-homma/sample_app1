@@ -38,16 +38,6 @@ class FollowedFragment @Inject constructor() : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        Timber.d("check_onResume")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Timber.d("check_onStart")
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
@@ -71,15 +61,13 @@ class FollowedFragment @Inject constructor() : Fragment() {
         lifecycleScope.launch(Dispatchers.IO) {
             followedViewModel.uiState.collect { state ->
                 when (state) {
-                    is MyNewsStatus.SUCCESS -> binding.swipeRefresh.isRefreshing = false
-                    is MyNewsStatus.LOADING -> binding.swipeRefresh.isRefreshing = false
-                    else -> binding.swipeRefresh.isRefreshing = true
+                    is MyNewsStatus.RELOADING -> binding.swipeRefresh.isRefreshing = true
+                    else -> binding.swipeRefresh.isRefreshing = false
                 }
             }
         }
 
         followedViewModel.isUpdateFollowed.observe(viewLifecycleOwner) {
-            Timber.d("check_isUpdate:$it")
             if (it) followedViewModel.onRefresh()
         }
     }
