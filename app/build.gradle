@@ -47,10 +47,7 @@ dependencies {
     implementation project(':feature:core')
     implementation project(':feature:followed')
     implementation project(':feature:topic')
-    testImplementation project(':useForTesting')
-
-    implementation "androidx.core:core-ktx:$core_ktx"
-    implementation "com.google.android.material:material:$material"
+    testImplementation project(':testData')
 
     // android Support Library
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"

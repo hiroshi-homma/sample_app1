@@ -4,5 +4,5 @@ include ':feature:core'
 include ':app'
 include ':data'
 include ':domain'
-include ':useForTesting'
+include ':testData'
 rootProject.name = "MyNews"
