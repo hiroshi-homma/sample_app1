@@ -14,7 +14,6 @@ import com.kotlin.project.data.model.MyNewsStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class FollowedFragment @Inject constructor() : Fragment() {

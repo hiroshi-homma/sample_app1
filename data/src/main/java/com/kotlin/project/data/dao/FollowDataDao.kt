@@ -20,12 +20,18 @@ interface FollowDataDao {
     @Query("SELECT * FROM followData WHERE label LIKE (:label)")
     fun findByLabel(label: String): FollowData
 
+    @Query("DELETE FROM followData WHERE id = (:id)")
+    fun deleteForId(id: String)
+
+    @Query("UPDATE followData SET is_followed = (:isFollowed) WHERE id = (:id)")
+    fun upDateIsFollowedForId(id: String, isFollowed: Boolean)
+
+    @Query("DELETE FROM followData")
+    fun deleteAll()
+
     @Insert
     fun insert(vararg followData: FollowData)
 
     @Delete
     fun delete(vararg followData: FollowData)
-
-    @Query("DELETE FROM followData WHERE id = (:id)")
-    fun deleteForId(id: String)
 }

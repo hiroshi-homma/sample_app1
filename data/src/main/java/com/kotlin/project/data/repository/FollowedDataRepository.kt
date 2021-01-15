@@ -9,6 +9,8 @@ interface FollowedDataRepository {
     suspend fun insert(followData: FollowData)
     suspend fun delete(followData: FollowData)
     suspend fun deleteForId(id: String)
+    suspend fun updateIsFollowed(id: String, isFollowed: Boolean)
+    suspend fun deleteAll()
 }
 
 class FollowedDataRepositoryImpl @Inject constructor(
@@ -22,4 +24,9 @@ class FollowedDataRepositoryImpl @Inject constructor(
     override suspend fun delete(followData: FollowData) = dao.delete(followData)
 
     override suspend fun deleteForId(id: String) = dao.deleteForId(id)
+
+    override suspend fun updateIsFollowed(id: String, isFollowed: Boolean) =
+        dao.upDateIsFollowedForId(id, isFollowed)
+
+    override suspend fun deleteAll() = dao.deleteAll()
 }
