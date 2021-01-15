@@ -1,6 +1,7 @@
 package com.example.news.di
 
 import android.app.Application
+import com.example.core.di.DelegateModule
 import com.example.followed.FollowedModule
 import com.example.news.MainApplication
 import com.example.topic.TopicModule
@@ -23,8 +24,11 @@ import javax.inject.Singleton
         ViewModelModule::class,
         FragmentModule::class,
         ActivityModule::class,
-        // ui
+        // core
+        DelegateModule::class,
+        // topic
         TopicModule::class,
+        // followed
         FollowedModule::class,
         // domain
         UseCaseModule::class,

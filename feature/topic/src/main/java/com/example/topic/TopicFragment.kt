@@ -14,6 +14,7 @@ import com.kotlin.project.data.model.MyNewsStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class TopicFragment @Inject constructor() : Fragment() {
@@ -35,6 +36,16 @@ class TopicFragment @Inject constructor() : Fragment() {
         lifecycle.addObserver(topicViewModel)
         observe()
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Timber.d("check_onResume")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Timber.d("check_onStart")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,6 +76,11 @@ class TopicFragment @Inject constructor() : Fragment() {
                     else -> binding.swipeRefresh.isRefreshing = true
                 }
             }
+        }
+
+        topicViewModel.isUpdateTopic.observe(viewLifecycleOwner) {
+            Timber.d("check_isUpdate:$it")
+            if (it) topicViewModel.onRefresh()
         }
     }
 }
