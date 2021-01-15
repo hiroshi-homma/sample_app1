@@ -23,6 +23,10 @@ class MyNewsActivity : DaggerAppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.navView.setupWithNavController(navController)
+
+        binding.navView.setOnNavigationItemReselectedListener {
+            
+        }
     }
 
     override fun onBackPressed() {

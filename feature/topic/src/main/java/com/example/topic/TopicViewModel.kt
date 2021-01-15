@@ -85,7 +85,7 @@ class TopicViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (val r = getMyNewsUseCase.getNews()) {
                 is Result.Success -> {
-                    if (_sections.value == null) _sections.postValue(r.data.sections)
+                    _sections.postValue(r.data.sections)
                     _uiState.emit(MyNewsStatus.SUCCESS)
                 }
                 is Result.Error -> {
