@@ -1,16 +1,16 @@
-package com.example.core.ui
+package com.example.core.delegate
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-interface ViewModelDelegate {
+interface TopicAndFollowedDelegate {
     val isUpdateTopic: LiveData<Boolean>
-    fun setIsUpdateTopic(isUpdate: Boolean)
     val isUpdateFollowed: LiveData<Boolean>
+    fun setIsUpdateTopic(isUpdate: Boolean)
     fun setIsUpdateFollowed(isUpdate: Boolean)
 }
 
-class ViewModelDelegateImpl : ViewModelDelegate {
+class TopicAndFollowedDelegateImpl : TopicAndFollowedDelegate {
     private val _isUpdateTopic = MutableLiveData<Boolean>()
     override val isUpdateTopic: LiveData<Boolean> = _isUpdateTopic
 

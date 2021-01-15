@@ -1,7 +1,7 @@
 package com.example.core.di
 
-import com.example.core.ui.ViewModelDelegate
-import com.example.core.ui.ViewModelDelegateImpl
+import com.example.core.delegate.TopicAndFollowedDelegate
+import com.example.core.delegate.TopicAndFollowedDelegateImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -11,7 +11,7 @@ class DelegateModule {
 
     @Singleton
     @Provides
-    fun provideViewModelDelegate(): ViewModelDelegate {
-        return ViewModelDelegateImpl()
+    fun provideTopicAndFollowedDelegate(): TopicAndFollowedDelegate {
+        return TopicAndFollowedDelegateImpl()
     }
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.core.ui.ViewModelDelegate
+import com.example.core.delegate.TopicAndFollowedDelegate
 import com.kotlin.project.data.entities.FollowData
 import com.kotlin.project.data.model.MyNewsStatus
 import com.kotlin.project.data.model.Result
@@ -18,15 +18,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class TopicViewModel @Inject constructor(
     application: Application,
     private val getMyNewsUseCase: GetMyNewsUseCase,
     private val followDataUseCase: FollowDataUseCase,
-    private val viewModelDelegate: ViewModelDelegate
-) : AndroidViewModel(application), LifecycleObserver, ViewModelDelegate by viewModelDelegate {
+    private val topicAndFollowedDelegate: TopicAndFollowedDelegate
+) : AndroidViewModel(application), LifecycleObserver, TopicAndFollowedDelegate by topicAndFollowedDelegate {
 
     private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
     val uiState: StateFlow<MyNewsStatus> = _uiState
@@ -35,7 +34,6 @@ class TopicViewModel @Inject constructor(
     val sections: LiveData<ArrayList<Section>> = _sections
 
     private val _followData = MediatorLiveData<List<FollowData>>()
-    val followData: LiveData<List<FollowData>> = _followData
 
     private val _ids = MutableLiveData<List<String?>>()
     val ids: LiveData<List<String?>> = _ids
@@ -48,14 +46,14 @@ class TopicViewModel @Inject constructor(
     fun onRefresh() {
         fetchData()
         fetchFollowData()
-        viewModelDelegate.setIsUpdateTopic(false)
+        topicAndFollowedDelegate.setIsUpdateTopic(false)
     }
 
     fun insertFollowData(followData: FollowData) {
         viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.insert(followData)
         }
-        viewModelDelegate.setIsUpdateFollowed(true)
+        topicAndFollowedDelegate.setIsUpdateFollowed(true)
     }
 
     fun deleteFollowData(followData: FollowData) {
@@ -68,7 +66,7 @@ class TopicViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.deleteForId(id)
         }
-        viewModelDelegate.setIsUpdateFollowed(true)
+        topicAndFollowedDelegate.setIsUpdateFollowed(true)
     }
 
     fun fetchFollowData() {
@@ -77,9 +75,14 @@ class TopicViewModel @Inject constructor(
                 is Result.Success -> {
                     _ids.postValue(r.data.map { it.id })
                     _followData.postValue(r.data)
+                    if (r.data.isNotEmpty()) {
+                        _uiState.emit(MyNewsStatus.SUCCESS)
+                    } else {
+                        _uiState.emit(MyNewsStatus.ERROR)
+                    }
                 }
                 is Result.Error -> {
-                    Timber.d("check_error:${r.myNewsError}")
+                    _uiState.emit(MyNewsStatus.ERROR)
                 }
             }
         }

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.core.ui.ViewModelDelegate
+import com.example.core.delegate.TopicAndFollowedDelegate
 import com.kotlin.project.data.entities.FollowData
 import com.kotlin.project.data.model.MyNewsStatus
 import com.kotlin.project.data.model.Result
@@ -22,8 +22,8 @@ import javax.inject.Inject
 class FollowedViewModel @Inject constructor(
     application: Application,
     private val followDataUseCase: FollowDataUseCase,
-    private val viewModelDelegate: ViewModelDelegate
-) : AndroidViewModel(application), LifecycleObserver, ViewModelDelegate by viewModelDelegate {
+    private val topicAndFollowedDelegate: TopicAndFollowedDelegate
+) : AndroidViewModel(application), LifecycleObserver, TopicAndFollowedDelegate by topicAndFollowedDelegate {
 
     private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
     val uiState: StateFlow<MyNewsStatus> = _uiState
@@ -42,14 +42,14 @@ class FollowedViewModel @Inject constructor(
     fun onRefresh() {
         fetchData(true)
         checkData()
-        viewModelDelegate.setIsUpdateFollowed(false)
+        topicAndFollowedDelegate.setIsUpdateFollowed(false)
     }
 
     fun insertFollowData(followData: FollowData) {
         viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.insert(followData)
         }
-        viewModelDelegate.setIsUpdateTopic(true)
+        topicAndFollowedDelegate.setIsUpdateTopic(true)
     }
 
     fun deleteFollowData(followData: FollowData) {
@@ -62,7 +62,7 @@ class FollowedViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.deleteForId(id)
         }
-        viewModelDelegate.setIsUpdateTopic(true)
+        topicAndFollowedDelegate.setIsUpdateTopic(true)
     }
 
     private fun fetchData(isPullToRefresh: Boolean = false) {
@@ -71,7 +71,11 @@ class FollowedViewModel @Inject constructor(
             when (val r = followDataUseCase.getAll()) {
                 is Result.Success -> {
                     _followDataList.postValue(r.data)
-                    _uiState.emit(MyNewsStatus.SUCCESS)
+                    if (r.data.isNotEmpty()) {
+                        _uiState.emit(MyNewsStatus.SUCCESS)
+                    } else {
+                        _uiState.emit(MyNewsStatus.ERROR)
+                    }
                 }
                 is Result.Error -> {
                     _uiState.emit(MyNewsStatus.ERROR)
