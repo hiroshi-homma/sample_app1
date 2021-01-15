@@ -21,5 +21,6 @@ fun Hit.transformForInsert(sectionTitle: String, groupTitle: String? = ""): Foll
         label = label,
         type = type,
         followersCount = followersCount,
+        false,
     )
 }

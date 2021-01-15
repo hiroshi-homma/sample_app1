@@ -13,7 +13,8 @@ data class FollowData(
     @ColumnInfo(name = "group_name") val groupName: String?,
     @ColumnInfo(name = "label") val label: String?,
     @ColumnInfo(name = "type") val type: String?,
-    @ColumnInfo(name = "followers_count") val followersCount: Int?
+    @ColumnInfo(name = "followers_count") val followersCount: Int?,
+    @ColumnInfo(name = "is_followed") val isFollowed: Boolean?
 )
 
 fun FollowData.transform(): Hit {
