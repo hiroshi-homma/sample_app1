@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.core.ui.ViewModelDelegate
 import com.kotlin.project.data.entities.FollowData
 import com.kotlin.project.data.model.MyNewsStatus
 import com.kotlin.project.data.model.Result
@@ -23,8 +24,9 @@ import javax.inject.Inject
 class TopicViewModel @Inject constructor(
     application: Application,
     private val getMyNewsUseCase: GetMyNewsUseCase,
-    private val followDataUseCase: FollowDataUseCase
-) : AndroidViewModel(application), LifecycleObserver {
+    private val followDataUseCase: FollowDataUseCase,
+    private val viewModelDelegate: ViewModelDelegate
+) : AndroidViewModel(application), LifecycleObserver, ViewModelDelegate by viewModelDelegate {
 
     private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
     val uiState: StateFlow<MyNewsStatus> = _uiState
@@ -46,12 +48,14 @@ class TopicViewModel @Inject constructor(
     fun onRefresh() {
         fetchData()
         fetchFollowData()
+        viewModelDelegate.setIsUpdateTopic(false)
     }
 
     fun insertFollowData(followData: FollowData) {
         viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.insert(followData)
         }
+        viewModelDelegate.setIsUpdateFollowed(true)
     }
 
     fun deleteFollowData(followData: FollowData) {
@@ -64,6 +68,7 @@ class TopicViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             followDataUseCase.deleteForId(id)
         }
+        viewModelDelegate.setIsUpdateFollowed(true)
     }
 
     fun fetchFollowData() {
