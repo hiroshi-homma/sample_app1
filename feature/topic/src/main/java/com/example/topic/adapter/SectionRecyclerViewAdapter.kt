@@ -9,7 +9,6 @@ import com.example.topic.TopicViewModel
 import com.example.topic.adapter.SectionRecyclerViewAdapter.SectionHolder
 import com.example.topic.databinding.ItemSectionsViewBinding
 import com.kotlin.project.data.model.Section
-import timber.log.Timber
 
 class SectionRecyclerViewAdapter(
     private val sections: ArrayList<Section>,
@@ -29,8 +28,6 @@ class SectionRecyclerViewAdapter(
     override fun getItemCount() = sections.size
 
     override fun onBindViewHolder(holder: SectionHolder, position: Int) {
-        Timber.d("check_replayCache:${topicViewModel.sections.replayCache}")
-
         holder.binding.section = sections[position]
         holder.binding.groupRecyclerView.adapter =
             GroupsRecyclerViewAdapter(sections[position].groups, topicViewModel, position)

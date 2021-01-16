@@ -8,6 +8,7 @@ import com.example.core.delegate.TopicAndFollowedDelegate
 import com.example.topic.TopicAction.ShowNetWorkCheckDialog
 import com.google.gson.Gson
 import com.kotlin.project.data.entities.CachedData
+import com.kotlin.project.data.model.Hit
 import com.kotlin.project.data.model.MyNewsStatus
 import com.kotlin.project.data.model.Result
 import com.kotlin.project.data.model.Section
@@ -21,7 +22,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class TopicViewModel @Inject constructor(
@@ -36,10 +36,11 @@ class TopicViewModel @Inject constructor(
     // state
     private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
     val uiState: StateFlow<MyNewsStatus> = _uiState
+
     private val _isDialog = MutableStateFlow(false)
     val isDialog: StateFlow<Boolean> = _isDialog
 
-    // shared
+    // response & action
     private val _action = MutableSharedFlow<TopicAction>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -74,7 +75,6 @@ class TopicViewModel @Inject constructor(
                 data != null -> {
                     val json =
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
-                    Timber.d("check_data:$data")
                     _sections.emit(json.sections)
                     _uiState.emit(MyNewsStatus.SUCCESS)
                 }
@@ -108,10 +108,10 @@ class TopicViewModel @Inject constructor(
         }
     }
 
-    fun updateCacheData(sp: Int, gp: Int, hp: Int, isSelected: Boolean) {
+    fun updateCacheData(sp: Int, gp: Int, hp: Int, hit: Hit) {
         val updateData = sections.replayCache.toMutableList()
         updateData.forEach { s ->
-            s[sp].groups[gp].hits[hp] = s[sp].groups[gp].hits[hp].copy(isFollowed = isSelected)
+            s[sp].groups[gp].hits[hp] = hit
         }
         val jsonString = Gson().toJson(Sections(updateData[0])) as String
         viewModelScope.launch(Dispatchers.IO) {

@@ -8,8 +8,10 @@ import com.example.followed.FollowedViewModel
 import com.example.followed.R
 import com.example.followed.adapter.FollowDataRecyclerViewAdapter.FollowDataHolder
 import com.example.followed.databinding.ItemFollowDataViewBinding
+import com.kotlin.project.data.model.Hit
 
 class FollowDataRecyclerViewAdapter(
+    private val hits: ArrayList<Hit>,
     private val followedViewModel: FollowedViewModel
 ) : RecyclerView.Adapter<FollowDataHolder>() {
 
@@ -25,9 +27,10 @@ class FollowDataRecyclerViewAdapter(
         )
     }
 
-    override fun getItemCount() = 0
+    override fun getItemCount() = hits.size
 
     override fun onBindViewHolder(holder: FollowDataHolder, position: Int) {
+        holder.binding.hit = hits[position]
         holder.binding.checkFollow.apply {
             setOnClickListener {
                 isSelected = !isSelected

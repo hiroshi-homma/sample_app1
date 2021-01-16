@@ -17,7 +17,6 @@ import com.example.topic.databinding.FragmentTopicBinding
 import com.kotlin.project.data.model.MyNewsStatus
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class TopicFragment @Inject constructor() : Fragment() {
@@ -55,7 +54,6 @@ class TopicFragment @Inject constructor() : Fragment() {
     override fun onStart() {
         super.onStart()
         topicViewModel.isDialog.value.let {
-            Timber.d("check_flag:$it")
             if (it) topicViewModel.onRefresh()
         }
     }
