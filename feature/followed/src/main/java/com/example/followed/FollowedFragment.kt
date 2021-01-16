@@ -7,7 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.followed.adapter.FollowDataRecyclerViewAdapter
 import com.example.followed.databinding.FragmentFollowedBinding
+import com.kotlin.project.data.model.MyNewsStatus
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FollowedFragment @Inject constructor() : Fragment() {
@@ -33,8 +38,35 @@ class FollowedFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            this.swipeRefresh.setOnRefreshListener {
+                progressBar.visibility = View.VISIBLE
+                sectionRecyclerView.visibility = View.GONE
+                followedViewModel.onRefresh()
+            }
+        }
     }
 
     private fun observe() {
+        lifecycleScope.launch {
+            followedViewModel.hits.collect { hits ->
+                binding.apply {
+                    progressBar.visibility = View.GONE
+                    sectionRecyclerView.apply {
+                        visibility = View.VISIBLE
+                        adapter = FollowDataRecyclerViewAdapter(hits, followedViewModel)
+                    }
+                }
+            }
+        }
+        lifecycleScope.launch {
+            followedViewModel.uiState.collect { state ->
+                binding.swipeRefresh.isRefreshing = false
+                when (state) {
+                    is MyNewsStatus.RELOADING -> binding.swipeRefresh.isRefreshing = true
+                    else -> binding.swipeRefresh.isRefreshing = false
+                }
+            }
+        }
     }
 }

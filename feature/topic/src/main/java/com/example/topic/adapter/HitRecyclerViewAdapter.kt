@@ -49,7 +49,7 @@ class HitRecyclerViewAdapter(
                             sectionPosition,
                             groupPosition,
                             position,
-                            isSelected
+                            hits[position].copy(isFollowed = isSelected)
                         )
                     }
                     else -> {
@@ -58,7 +58,7 @@ class HitRecyclerViewAdapter(
                             sectionPosition,
                             groupPosition,
                             position,
-                            isSelected
+                            hits[position].copy(isFollowed = isSelected)
                         )
                     }
                 }
