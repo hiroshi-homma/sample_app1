@@ -9,14 +9,13 @@ import com.example.topic.TopicViewModel
 import com.example.topic.adapter.HitRecyclerViewAdapter.HitHolder
 import com.example.topic.databinding.ItemHitViewBinding
 import com.kotlin.project.data.model.Hit
-import com.kotlin.project.data.model.transformForInsert
-import javax.inject.Inject
+import timber.log.Timber
 
-class HitRecyclerViewAdapter @Inject constructor(
+class HitRecyclerViewAdapter(
     private val hits: ArrayList<Hit>,
     private val topicViewModel: TopicViewModel,
-    private val sectionTitle: String,
-    private val groupTitle: String? = ""
+    private val sectionPosition: Int,
+    private val groupPosition: Int
 ) : RecyclerView.Adapter<HitHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HitHolder {
@@ -26,42 +25,25 @@ class HitRecyclerViewAdapter @Inject constructor(
             parent,
             false
         )
-        return HitHolder(
-            binding
-        )
+        return HitHolder(binding)
     }
 
     override fun getItemCount() = hits.size
 
     override fun onBindViewHolder(holder: HitHolder, position: Int) {
         holder.binding.hit = hits[position]
-        val ids = topicViewModel.ids.value ?: listOf()
-        val isFollowed = ids.contains(hits[position].id)
         holder.binding.checkFollow.apply {
-            isSelected = if (isFollowed) {
-                setImageResource(R.drawable.ic_baseline_check_circle_24)
-                true
-            } else {
-                setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
-                false
-            }
-
             setOnClickListener {
+                Timber.d("check_update_position:{$sectionPosition},{$groupPosition},{$position}")
                 isSelected = !isSelected
                 when {
                     isSelected -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
-                        val e = hits[position].transformForInsert(sectionTitle, groupTitle)
-                        topicViewModel.insertFollowData(e)
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
-                        hits[position].id?.let {
-                            topicViewModel.deleteFollowDataForId(it)
-                        }
                     }
                 }
-                topicViewModel.fetchFollowData()
             }
         }
     }
