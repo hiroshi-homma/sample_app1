@@ -118,7 +118,7 @@ class TopicViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             cachedDataUseCase.updateCache(1L, jsonString)
         }
-        topicAndFollowedDelegate.setUpdateFollowCount(1)
+        topicAndFollowedDelegate.setIsUpdateFollowed(true)
     }
 
     private fun checkFollowedComparison(json: Sections) {

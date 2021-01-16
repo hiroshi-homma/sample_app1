@@ -78,7 +78,7 @@ class FollowedViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             cachedDataUseCase.updateCache(1L, jsonString)
         }
-        topicAndFollowedDelegate.setUpdateTopicCount(1)
+        topicAndFollowedDelegate.setIsUpdateTopic(true)
     }
 
     private fun createHits(json: Sections): ArrayList<Hit> {
