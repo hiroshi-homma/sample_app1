@@ -5,16 +5,23 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.core.R
 import com.example.core.databinding.ActivityMyNewsBinding
+import com.example.core.delegate.TopicAndFollowedDelegate
 import dagger.android.support.DaggerAppCompatActivity
+import timber.log.Timber
+import javax.inject.Inject
 
 class MyNewsActivity : DaggerAppCompatActivity() {
 
     private lateinit var binding: ActivityMyNewsBinding
     private var backCount = 0
+
+    @Inject
+    lateinit var topicAndFollowedDelegate: TopicAndFollowedDelegate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +30,7 @@ class MyNewsActivity : DaggerAppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.navView.setupWithNavController(navController)
+        setBottomNavigationListener(navController)
     }
 
     override fun onBackPressed() {
@@ -49,6 +57,24 @@ class MyNewsActivity : DaggerAppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setBottomNavigationListener(navController: NavController) {
+        binding.navView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_topic -> {
+                    if (topicAndFollowedDelegate.isComparisonCount()) {
+                        Timber.d("check_data:${topicAndFollowedDelegate.isComparisonCount()}")
+                        topicAndFollowedDelegate.setUpdateFollowCount(1)
+                    }
+                    navController.navigate(R.id.navigation_topic)
+                }
+                R.id.navigation_followed -> {
+                    navController.navigate(R.id.navigation_followed)
+                }
+            }
+            true
         }
     }
 }

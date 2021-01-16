@@ -12,12 +12,9 @@ import com.kotlin.project.data.model.Section
 import com.kotlin.project.data.model.Sections
 import com.kotlin.project.domain.usecase.CachedDataUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,20 +26,19 @@ class FollowedViewModel @Inject constructor(
     LifecycleObserver,
     TopicAndFollowedDelegate by topicAndFollowedDelegate {
 
-    // state
-    private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
-    val uiState: StateFlow<MyNewsStatus> = _uiState
+    // event
+    private val _myStatus = MutableSharedFlow<MyNewsStatus>(
+        replay = 1, onBufferOverflow = DROP_OLDEST
+    )
+    val myStatus: SharedFlow<MyNewsStatus> = _myStatus
 
-    // response
     private val _hits = MutableSharedFlow<ArrayList<Hit>>(
-        replay = 1,
-        onBufferOverflow = DROP_OLDEST
+        replay = 1, onBufferOverflow = DROP_OLDEST
     )
     val hits: SharedFlow<ArrayList<Hit>> = _hits
 
     private val _sections = MutableSharedFlow<ArrayList<Section>>(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
+        replay = 1, onBufferOverflow = DROP_OLDEST
     )
     private val sections: SharedFlow<ArrayList<Section>> = _sections
 
@@ -56,7 +52,7 @@ class FollowedViewModel @Inject constructor(
 
     private fun fetchData(isPullToRefresh: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
+            _myStatus.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
             val data = cachedDataUseCase.getCache()
             when {
                 data != null -> {
@@ -64,16 +60,16 @@ class FollowedViewModel @Inject constructor(
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
                     _sections.emit(json.sections)
                     _hits.emit(createHits(json))
-                    _uiState.emit(MyNewsStatus.SUCCESS)
+                    _myStatus.emit(MyNewsStatus.SUCCESS)
                 }
                 else -> {
-                    _uiState.emit(MyNewsStatus.ERROR)
+                    _myStatus.emit(MyNewsStatus.ERROR)
                 }
             }
         }
     }
 
-    fun updateCacheData(hp: Int, hit: Hit) {
+    fun updateCacheData(hit: Hit) {
         val updateData = sections.replayCache.toMutableList()
         updateData.forEach { s ->
             s[hit.updateSectionNumber].groups[hit.updateGroupNumber].hits[hit.updateHitNumber] = hit
@@ -82,14 +78,20 @@ class FollowedViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             cachedDataUseCase.updateCache(1L, jsonString)
         }
+        topicAndFollowedDelegate.setUpdateTopicCount(1)
     }
 
     private fun createHits(json: Sections): ArrayList<Hit> {
         val hits = arrayListOf<Hit>()
+        var followedCount = 0
         json.sections.forEach { s ->
             s.groups.forEach { g ->
                 g.hits.forEach { h ->
-                    if (h.isFollowed) hits.add(h)
+                    if (h.isFollowed) {
+                        hits.add(h)
+                        followedCount++
+                        topicAndFollowedDelegate.setFollowedCount(followedCount)
+                    }
                 }
             }
         }

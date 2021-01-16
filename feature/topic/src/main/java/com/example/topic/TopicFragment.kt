@@ -59,6 +59,10 @@ class TopicFragment @Inject constructor() : Fragment() {
     }
 
     private fun observe() {
+        topicViewModel.updateTopicCount.observe(viewLifecycleOwner) {
+            topicViewModel.onRefresh()
+        }
+
         lifecycleScope.launch {
             topicViewModel.action.collect { action ->
                 when (action) {
@@ -82,7 +86,6 @@ class TopicFragment @Inject constructor() : Fragment() {
         }
         lifecycleScope.launch {
             topicViewModel.uiState.collect { state ->
-                binding.swipeRefresh.isRefreshing = false
                 when (state) {
                     is MyNewsStatus.RELOADING -> binding.swipeRefresh.isRefreshing = true
                     else -> binding.swipeRefresh.isRefreshing = false

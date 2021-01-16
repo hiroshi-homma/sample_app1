@@ -45,19 +45,13 @@ class FollowDataRecyclerViewAdapter(
                     isSelected -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
                         followedViewModel.updateCacheData(
-                            position,
-                            hits[position].copy(
-                                isFollowed = isSelected
-                            )
+                            hits[position].copy(isFollowed = isSelected)
                         )
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                         followedViewModel.updateCacheData(
-                            position,
-                            hits[position].copy(
-                                isFollowed = isSelected
-                            )
+                            hits[position].copy(isFollowed = isSelected)
                         )
                     }
                 }

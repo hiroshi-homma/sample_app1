@@ -48,6 +48,10 @@ class FollowedFragment @Inject constructor() : Fragment() {
     }
 
     private fun observe() {
+        followedViewModel.updateFollowCount.observe(viewLifecycleOwner) {
+            followedViewModel.onRefresh()
+        }
+
         lifecycleScope.launch {
             followedViewModel.hits.collect { hits ->
                 binding.apply {
@@ -60,8 +64,7 @@ class FollowedFragment @Inject constructor() : Fragment() {
             }
         }
         lifecycleScope.launch {
-            followedViewModel.uiState.collect { state ->
-                binding.swipeRefresh.isRefreshing = false
+            followedViewModel.myStatus.collect { state ->
                 when (state) {
                     is MyNewsStatus.RELOADING -> binding.swipeRefresh.isRefreshing = true
                     else -> binding.swipeRefresh.isRefreshing = false
