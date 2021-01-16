@@ -39,7 +39,6 @@ class HitRecyclerViewAdapter(
                 setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                 false
             }
-
             setOnClickListener {
                 isSelected = !isSelected
                 when {
@@ -49,7 +48,12 @@ class HitRecyclerViewAdapter(
                             sectionPosition,
                             groupPosition,
                             position,
-                            hits[position].copy(isFollowed = isSelected)
+                            hits[position].copy(
+                                isFollowed = isSelected,
+                                updateSectionNumber = sectionPosition,
+                                updateGroupNumber = groupPosition,
+                                updateHitNumber = position
+                            )
                         )
                     }
                     else -> {
@@ -58,7 +62,12 @@ class HitRecyclerViewAdapter(
                             sectionPosition,
                             groupPosition,
                             position,
-                            hits[position].copy(isFollowed = isSelected)
+                            hits[position].copy(
+                                isFollowed = isSelected,
+                                updateSectionNumber = sectionPosition,
+                                updateGroupNumber = groupPosition,
+                                updateHitNumber = position
+                            )
                         )
                     }
                 }

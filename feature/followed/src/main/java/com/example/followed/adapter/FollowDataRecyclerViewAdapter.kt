@@ -32,14 +32,33 @@ class FollowDataRecyclerViewAdapter(
     override fun onBindViewHolder(holder: FollowDataHolder, position: Int) {
         holder.binding.hit = hits[position]
         holder.binding.checkFollow.apply {
+            isSelected = if (hits[position].isFollowed) {
+                setImageResource(R.drawable.ic_baseline_check_circle_24)
+                true
+            } else {
+                setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+                false
+            }
             setOnClickListener {
                 isSelected = !isSelected
                 when {
                     isSelected -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
+                        followedViewModel.updateCacheData(
+                            position,
+                            hits[position].copy(
+                                isFollowed = isSelected
+                            )
+                        )
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+                        followedViewModel.updateCacheData(
+                            position,
+                            hits[position].copy(
+                                isFollowed = isSelected
+                            )
+                        )
                     }
                 }
             }
