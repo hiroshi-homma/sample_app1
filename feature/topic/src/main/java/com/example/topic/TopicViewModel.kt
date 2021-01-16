@@ -15,11 +15,13 @@ import com.kotlin.project.data.model.Sections
 import com.kotlin.project.domain.usecase.CachedDataUseCase
 import com.kotlin.project.domain.usecase.GetMyNewsUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class TopicViewModel @Inject constructor(
@@ -38,10 +40,16 @@ class TopicViewModel @Inject constructor(
     val isDialog: StateFlow<Boolean> = _isDialog
 
     // shared
-    private val _action = MutableSharedFlow<TopicAction>()
+    private val _action = MutableSharedFlow<TopicAction>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
     val action: SharedFlow<TopicAction> = _action
 
-    private val _sections = MutableSharedFlow<ArrayList<Section>>()
+    private val _sections = MutableSharedFlow<ArrayList<Section>>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
     val sections: SharedFlow<ArrayList<Section>> = _sections
 
     init {
@@ -66,6 +74,7 @@ class TopicViewModel @Inject constructor(
                 data != null -> {
                     val json =
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
+                    Timber.d("check_data:$data")
                     _sections.emit(json.sections)
                     _uiState.emit(MyNewsStatus.SUCCESS)
                 }
@@ -96,6 +105,17 @@ class TopicViewModel @Inject constructor(
             cachedDataUseCase.insert(CachedData(0, jsonString))
             _uiState.emit(MyNewsStatus.SUCCESS)
             fetchData()
+        }
+    }
+
+    fun updateCacheData(sp: Int, gp: Int, hp: Int, isSelected: Boolean) {
+        val updateData = sections.replayCache.toMutableList()
+        updateData.forEach { s ->
+            s[sp].groups[gp].hits[hp] = s[sp].groups[gp].hits[hp].copy(isFollowed = isSelected)
+        }
+        val jsonString = Gson().toJson(Sections(updateData[0])) as String
+        viewModelScope.launch(Dispatchers.IO) {
+            cachedDataUseCase.updateCache(1L, jsonString)
         }
     }
 }

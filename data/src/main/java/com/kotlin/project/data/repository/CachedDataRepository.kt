@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 interface CachedDataRepository {
     suspend fun getCache(): CachedData
+    suspend fun updateCache(id: Long, updateString: String)
     suspend fun deleteAll()
     suspend fun insert(cachedData: CachedData)
     suspend fun delete(cachedData: CachedData)
@@ -16,6 +17,8 @@ class CachedDataRepositoryImpl @Inject constructor(
 ) : CachedDataRepository {
 
     override suspend fun getCache(): CachedData = dao.getCache()
+
+    override suspend fun updateCache(id: Long, updateString: String) = dao.updateCache(id, updateString)
 
     override suspend fun deleteAll() = dao.deleteAll()
 

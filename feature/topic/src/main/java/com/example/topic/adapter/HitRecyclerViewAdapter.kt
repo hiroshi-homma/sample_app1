@@ -9,7 +9,6 @@ import com.example.topic.TopicViewModel
 import com.example.topic.adapter.HitRecyclerViewAdapter.HitHolder
 import com.example.topic.databinding.ItemHitViewBinding
 import com.kotlin.project.data.model.Hit
-import timber.log.Timber
 
 class HitRecyclerViewAdapter(
     private val hits: ArrayList<Hit>,
@@ -33,15 +32,34 @@ class HitRecyclerViewAdapter(
     override fun onBindViewHolder(holder: HitHolder, position: Int) {
         holder.binding.hit = hits[position]
         holder.binding.checkFollow.apply {
+            isSelected = if (hits[position].isFollowed) {
+                setImageResource(R.drawable.ic_baseline_check_circle_24)
+                true
+            } else {
+                setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+                false
+            }
+
             setOnClickListener {
-                Timber.d("check_update_position:{$sectionPosition},{$groupPosition},{$position}")
                 isSelected = !isSelected
                 when {
                     isSelected -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
+                        topicViewModel.updateCacheData(
+                            sectionPosition,
+                            groupPosition,
+                            position,
+                            isSelected
+                        )
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+                        topicViewModel.updateCacheData(
+                            sectionPosition,
+                            groupPosition,
+                            position,
+                            isSelected
+                        )
                     }
                 }
             }

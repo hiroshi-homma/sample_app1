@@ -11,6 +11,9 @@ interface CachedDataDao {
     @Query("SELECT * FROM cachedData")
     fun getCache(): CachedData
 
+    @Query("UPDATE cachedData SET cacheJsonString = :updateString WHERE uid = :id")
+    fun updateCache(id: Long, updateString: String)
+
     @Query("DELETE FROM cachedData")
     fun deleteAll()
 
