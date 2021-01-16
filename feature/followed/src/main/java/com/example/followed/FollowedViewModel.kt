@@ -44,7 +44,7 @@ class FollowedViewModel @Inject constructor(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
-    val sections: SharedFlow<ArrayList<Section>> = _sections
+    private val sections: SharedFlow<ArrayList<Section>> = _sections
 
     init {
         fetchData()
