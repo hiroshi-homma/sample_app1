@@ -6,12 +6,12 @@ import androidx.lifecycle.MutableLiveData
 interface TopicAndFollowedDelegate {
     val followedCount: LiveData<Int>
     val topicCount: LiveData<Int>
-    val updateFollowCount: LiveData<Int>
-    val updateTopicCount: LiveData<Int>
+    val isUpdateFollowed: LiveData<Boolean>
+    val isUpdateTopic: LiveData<Boolean>
     fun setFollowedCount(followedCount: Int)
     fun setTopicCount(topicCount: Int)
-    fun setUpdateFollowCount(updateCount: Int)
-    fun setUpdateTopicCount(updateCount: Int)
+    fun setIsUpdateFollowed(updateCount: Boolean)
+    fun setIsUpdateTopic(updateCount: Boolean)
     fun isComparisonCount(): Boolean
 }
 
@@ -22,19 +22,19 @@ class TopicAndFollowedDelegateImpl : TopicAndFollowedDelegate {
     private val _topicCount = MutableLiveData<Int>()
     override val topicCount: LiveData<Int> = _topicCount
 
-    private val _updateFollowCount = MutableLiveData<Int>()
-    override val updateFollowCount: LiveData<Int> = _updateFollowCount
+    private val _updateFollowCount = MutableLiveData<Boolean>()
+    override val isUpdateFollowed: LiveData<Boolean> = _updateFollowCount
 
-    private val _updateTopicCount = MutableLiveData<Int>()
-    override val updateTopicCount: LiveData<Int> = _updateTopicCount
+    private val _updateTopicCount = MutableLiveData<Boolean>()
+    override val isUpdateTopic: LiveData<Boolean> = _updateTopicCount
 
     override fun setFollowedCount(followedCount: Int) = _followedCount.postValue(followedCount)
 
     override fun setTopicCount(topicCount: Int) = _topicCount.postValue(topicCount)
 
-    override fun setUpdateFollowCount(updateCount: Int) = _updateFollowCount.postValue(updateCount)
+    override fun setIsUpdateFollowed(updateCount: Boolean) = _updateFollowCount.postValue(updateCount)
 
-    override fun setUpdateTopicCount(updateCount: Int) = _updateTopicCount.postValue(updateCount)
+    override fun setIsUpdateTopic(updateCount: Boolean) = _updateTopicCount.postValue(updateCount)
 
     override fun isComparisonCount(): Boolean {
         val followedCount = followedCount.value ?: 0

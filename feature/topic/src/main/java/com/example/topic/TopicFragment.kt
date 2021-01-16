@@ -59,7 +59,7 @@ class TopicFragment @Inject constructor() : Fragment() {
     }
 
     private fun observe() {
-        topicViewModel.updateTopicCount.observe(viewLifecycleOwner) {
+        topicViewModel.isUpdateTopic.observe(viewLifecycleOwner) {
             topicViewModel.onRefresh()
         }
 

@@ -12,7 +12,6 @@ import com.example.core.R
 import com.example.core.databinding.ActivityMyNewsBinding
 import com.example.core.delegate.TopicAndFollowedDelegate
 import dagger.android.support.DaggerAppCompatActivity
-import timber.log.Timber
 import javax.inject.Inject
 
 class MyNewsActivity : DaggerAppCompatActivity() {
@@ -65,8 +64,7 @@ class MyNewsActivity : DaggerAppCompatActivity() {
             when (it.itemId) {
                 R.id.navigation_topic -> {
                     if (topicAndFollowedDelegate.isComparisonCount()) {
-                        Timber.d("check_data:${topicAndFollowedDelegate.isComparisonCount()}")
-                        topicAndFollowedDelegate.setUpdateFollowCount(1)
+                        topicAndFollowedDelegate.setIsUpdateFollowed(true)
                     }
                     navController.navigate(R.id.navigation_topic)
                 }

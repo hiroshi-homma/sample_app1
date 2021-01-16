@@ -48,7 +48,7 @@ class FollowedFragment @Inject constructor() : Fragment() {
     }
 
     private fun observe() {
-        followedViewModel.updateFollowCount.observe(viewLifecycleOwner) {
+        followedViewModel.isUpdateFollowed.observe(viewLifecycleOwner) {
             followedViewModel.onRefresh()
         }
 
