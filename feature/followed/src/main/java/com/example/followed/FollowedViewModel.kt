@@ -8,9 +8,11 @@ import com.example.core.delegate.TopicAndFollowedDelegate
 import com.google.gson.Gson
 import com.kotlin.project.data.model.Hit
 import com.kotlin.project.data.model.MyNewsStatus
+import com.kotlin.project.data.model.Section
 import com.kotlin.project.data.model.Sections
 import com.kotlin.project.domain.usecase.CachedDataUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +40,12 @@ class FollowedViewModel @Inject constructor(
     )
     val hits: SharedFlow<ArrayList<Hit>> = _hits
 
+    private val _sections = MutableSharedFlow<ArrayList<Section>>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val sections: SharedFlow<ArrayList<Section>> = _sections
+
     init {
         fetchData()
     }
@@ -54,6 +62,7 @@ class FollowedViewModel @Inject constructor(
                 data != null -> {
                     val json =
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
+                    _sections.emit(json.sections)
                     _hits.emit(createHits(json))
                     _uiState.emit(MyNewsStatus.SUCCESS)
                 }
@@ -61,6 +70,17 @@ class FollowedViewModel @Inject constructor(
                     _uiState.emit(MyNewsStatus.ERROR)
                 }
             }
+        }
+    }
+
+    fun updateCacheData(hp: Int, hit: Hit) {
+        val updateData = sections.replayCache.toMutableList()
+        updateData.forEach { s ->
+            s[hit.updateSectionNumber].groups[hit.updateGroupNumber].hits[hit.updateHitNumber] = hit
+        }
+        val jsonString = Gson().toJson(Sections(updateData[0])) as String
+        viewModelScope.launch(Dispatchers.IO) {
+            cachedDataUseCase.updateCache(1L, jsonString)
         }
     }
 
