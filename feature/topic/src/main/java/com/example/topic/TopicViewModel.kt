@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class TopicViewModel @Inject constructor(
@@ -72,6 +73,11 @@ class TopicViewModel @Inject constructor(
             _myStatus.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
             val data = cachedDataUseCase.getCache()
             when {
+                data != null && isPullToRefresh -> {
+                    val json =
+                        Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
+                    fetchApiData(isPullToRefresh, json)
+                }
                 data != null -> {
                     val json =
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
@@ -87,11 +93,19 @@ class TopicViewModel @Inject constructor(
         }
     }
 
-    private fun fetchApiData(isPullToRefresh: Boolean = false) {
+    private fun fetchApiData(isPullToRefresh: Boolean = false, cacheSections: Sections? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             _myStatus.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
             when (val r = getMyNewsUseCase.getNews()) {
-                is Result.Success -> insertCacheData(r.data)
+                is Result.Success -> {
+                    if (isPullToRefresh) {
+                        cacheSections?.let {
+                            refreshCacheData(r.data, it)
+                        }
+                    } else {
+                        insertCacheData(r.data)
+                    }
+                }
                 is Result.Error -> {
                     _action.emit(ShowNetWorkCheckDialog)
                     _myStatus.emit(MyNewsStatus.ERROR)
@@ -119,6 +133,27 @@ class TopicViewModel @Inject constructor(
             cachedDataUseCase.updateCache(1L, jsonString)
         }
         topicAndFollowedDelegate.setIsUpdateFollowed(true)
+    }
+
+    private fun refreshCacheData(changeSections: Sections, cacheSections: Sections) {
+        Timber.d("check_data1:$changeSections")
+        cacheSections.sections.forEach { s ->
+            s.groups.forEach { g ->
+                g.hits.forEach { h ->
+                    if (h.isFollowed) {
+                        val sc = h.updateSectionNumber
+                        val gc = h.updateGroupNumber
+                        val hc = h.updateHitNumber
+                        changeSections.sections[sc].groups[gc].hits[hc] = h
+                    }
+                }
+            }
+        }
+        val jsonString = Gson().toJson(changeSections) as String
+        viewModelScope.launch(Dispatchers.IO) {
+            cachedDataUseCase.updateCache(1L, jsonString)
+            fetchData()
+        }
     }
 
     private fun checkFollowedComparison(json: Sections) {
