@@ -16,7 +16,7 @@ import com.kotlin.project.data.model.Sections
 import com.kotlin.project.domain.usecase.CachedDataUseCase
 import com.kotlin.project.domain.usecase.GetMyNewsUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -34,22 +34,22 @@ class TopicViewModel @Inject constructor(
     TopicAndFollowedDelegate by topicAndFollowedDelegate {
 
     // state
-    private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
-    val uiState: StateFlow<MyNewsStatus> = _uiState
-
     private val _isDialog = MutableStateFlow(false)
     val isDialog: StateFlow<Boolean> = _isDialog
 
-    // response & action
+    // event
+    private val _myStatus = MutableSharedFlow<MyNewsStatus>(
+        replay = 1, onBufferOverflow = DROP_OLDEST
+    )
+    val uiState: SharedFlow<MyNewsStatus> = _myStatus
+
     private val _action = MutableSharedFlow<TopicAction>(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
+        replay = 1, onBufferOverflow = DROP_OLDEST
     )
     val action: SharedFlow<TopicAction> = _action
 
     private val _sections = MutableSharedFlow<ArrayList<Section>>(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
+        replay = 1, onBufferOverflow = DROP_OLDEST
     )
     val sections: SharedFlow<ArrayList<Section>> = _sections
 
@@ -69,18 +69,19 @@ class TopicViewModel @Inject constructor(
 
     private fun fetchData(isPullToRefresh: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
+            _myStatus.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
             val data = cachedDataUseCase.getCache()
             when {
                 data != null -> {
                     val json =
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
+                    checkFollowedComparison(json)
                     _sections.emit(json.sections)
-                    _uiState.emit(MyNewsStatus.SUCCESS)
+                    _myStatus.emit(MyNewsStatus.SUCCESS)
                 }
                 else -> {
                     fetchApiData()
-                    _uiState.emit(MyNewsStatus.ERROR)
+                    _myStatus.emit(MyNewsStatus.ERROR)
                 }
             }
         }
@@ -88,12 +89,12 @@ class TopicViewModel @Inject constructor(
 
     private fun fetchApiData(isPullToRefresh: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
+            _myStatus.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
             when (val r = getMyNewsUseCase.getNews()) {
                 is Result.Success -> insertCacheData(r.data)
                 is Result.Error -> {
                     _action.emit(ShowNetWorkCheckDialog)
-                    _uiState.emit(MyNewsStatus.ERROR)
+                    _myStatus.emit(MyNewsStatus.ERROR)
                 }
             }
         }
@@ -103,7 +104,7 @@ class TopicViewModel @Inject constructor(
         val jsonString = Gson().toJson(sections) as String
         viewModelScope.launch(Dispatchers.IO) {
             cachedDataUseCase.insert(CachedData(0, jsonString))
-            _uiState.emit(MyNewsStatus.SUCCESS)
+            _myStatus.emit(MyNewsStatus.SUCCESS)
             fetchData()
         }
     }
@@ -116,6 +117,21 @@ class TopicViewModel @Inject constructor(
         val jsonString = Gson().toJson(Sections(updateData[0])) as String
         viewModelScope.launch(Dispatchers.IO) {
             cachedDataUseCase.updateCache(1L, jsonString)
+        }
+        topicAndFollowedDelegate.setUpdateFollowCount(1)
+    }
+
+    private fun checkFollowedComparison(json: Sections) {
+        var topicFollowedCount = 0
+        json.sections.forEach { s ->
+            s.groups.forEach { g ->
+                g.hits.forEach { h ->
+                    if (h.isFollowed) {
+                        topicFollowedCount++
+                        topicAndFollowedDelegate.setFollowedCount(topicFollowedCount)
+                    }
+                }
+            }
         }
     }
 }
