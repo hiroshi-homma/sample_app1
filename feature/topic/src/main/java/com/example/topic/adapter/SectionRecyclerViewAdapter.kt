@@ -22,9 +22,7 @@ class SectionRecyclerViewAdapter(
             parent,
             false
         )
-        return SectionHolder(
-            binding
-        )
+        return SectionHolder(binding)
     }
 
     override fun getItemCount() = sections.size
@@ -32,11 +30,7 @@ class SectionRecyclerViewAdapter(
     override fun onBindViewHolder(holder: SectionHolder, position: Int) {
         holder.binding.section = sections[position]
         holder.binding.groupRecyclerView.adapter =
-            GroupsRecyclerViewAdapter(
-                sections[position].groups,
-                topicViewModel,
-                sections[position].title
-            )
+            GroupsRecyclerViewAdapter(sections[position].groups, topicViewModel, position)
     }
 
     class SectionHolder(val binding: ItemSectionsViewBinding) :

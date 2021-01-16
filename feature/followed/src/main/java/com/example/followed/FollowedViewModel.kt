@@ -3,97 +3,98 @@ package com.example.followed
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.core.delegate.TopicAndFollowedDelegate
-import com.kotlin.project.data.entities.FollowData
+import com.google.gson.Gson
+import com.kotlin.project.data.model.Hit
 import com.kotlin.project.data.model.MyNewsStatus
-import com.kotlin.project.data.model.Result
-import com.kotlin.project.domain.usecase.FollowDataUseCase
+import com.kotlin.project.data.model.Section
+import com.kotlin.project.data.model.Sections
+import com.kotlin.project.domain.usecase.CachedDataUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.channels.BufferOverflow.DROP_OLDEST
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class FollowedViewModel @Inject constructor(
     application: Application,
-    private val followDataUseCase: FollowDataUseCase,
+    private val cachedDataUseCase: CachedDataUseCase,
     private val topicAndFollowedDelegate: TopicAndFollowedDelegate
-) : AndroidViewModel(application), LifecycleObserver, TopicAndFollowedDelegate by topicAndFollowedDelegate {
+) : AndroidViewModel(application),
+    LifecycleObserver,
+    TopicAndFollowedDelegate by topicAndFollowedDelegate {
 
-    private val _uiState = MutableStateFlow<MyNewsStatus>(MyNewsStatus.LOADING)
-    val uiState: StateFlow<MyNewsStatus> = _uiState
+    // event
+    private val _myStatus = MutableSharedFlow<MyNewsStatus>(
+        replay = 1, onBufferOverflow = DROP_OLDEST
+    )
+    val myStatus: SharedFlow<MyNewsStatus> = _myStatus
 
-    private val _followDataList = MediatorLiveData<List<FollowData>>()
-    val followDataList: LiveData<List<FollowData>> = _followDataList
+    private val _hits = MutableSharedFlow<ArrayList<Hit>>(
+        replay = 1, onBufferOverflow = DROP_OLDEST
+    )
+    val hits: SharedFlow<ArrayList<Hit>> = _hits
 
-    private val _ids = MutableLiveData<List<String?>>()
-    val ids: LiveData<List<String?>> = _ids
+    private val _sections = MutableSharedFlow<ArrayList<Section>>(
+        replay = 1, onBufferOverflow = DROP_OLDEST
+    )
+    private val sections: SharedFlow<ArrayList<Section>> = _sections
 
     init {
         fetchData()
-        checkData()
     }
 
     fun onRefresh() {
         fetchData(true)
-        checkData()
-        topicAndFollowedDelegate.setIsUpdateFollowed(false)
-    }
-
-    fun insertFollowData(followData: FollowData) {
-        viewModelScope.launch(Dispatchers.IO) {
-            followDataUseCase.insert(followData)
-        }
-        topicAndFollowedDelegate.setIsUpdateTopic(true)
-    }
-
-    fun deleteFollowData(followData: FollowData) {
-        viewModelScope.launch(Dispatchers.IO) {
-            followDataUseCase.delete(followData)
-        }
-    }
-
-    fun deleteFollowDataForId(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            followDataUseCase.deleteForId(id)
-        }
-        topicAndFollowedDelegate.setIsUpdateTopic(true)
     }
 
     private fun fetchData(isPullToRefresh: Boolean = false) {
-        _uiState.value = if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING
         viewModelScope.launch(Dispatchers.IO) {
-            when (val r = followDataUseCase.getAll()) {
-                is Result.Success -> {
-                    _followDataList.postValue(r.data)
-                    if (r.data.isNotEmpty()) {
-                        _uiState.emit(MyNewsStatus.SUCCESS)
-                    } else {
-                        _uiState.emit(MyNewsStatus.ERROR)
-                    }
+            _myStatus.emit(if (isPullToRefresh) MyNewsStatus.RELOADING else MyNewsStatus.LOADING)
+            val data = cachedDataUseCase.getCache()
+            when {
+                data != null -> {
+                    val json =
+                        Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
+                    _sections.emit(json.sections)
+                    _hits.emit(createHits(json))
+                    _myStatus.emit(MyNewsStatus.SUCCESS)
                 }
-                is Result.Error -> {
-                    _uiState.emit(MyNewsStatus.ERROR)
+                else -> {
+                    _myStatus.emit(MyNewsStatus.ERROR)
                 }
             }
         }
     }
 
-    fun checkData() {
+    fun updateCacheData(hit: Hit) {
+        val updateData = sections.replayCache.toMutableList()
+        updateData.forEach { s ->
+            s[hit.updateSectionNumber].groups[hit.updateGroupNumber].hits[hit.updateHitNumber] = hit
+        }
+        val jsonString = Gson().toJson(Sections(updateData[0])) as String
         viewModelScope.launch(Dispatchers.IO) {
-            when (val r = followDataUseCase.getAll()) {
-                is Result.Success -> {
-                    _ids.postValue(r.data.map { it.id })
-                }
-                is Result.Error -> {
-                    Timber.d("check_error:${r.myNewsError}")
+            cachedDataUseCase.updateCache(1L, jsonString)
+        }
+        topicAndFollowedDelegate.setIsUpdateTopic(true)
+    }
+
+    private fun createHits(json: Sections): ArrayList<Hit> {
+        val hits = arrayListOf<Hit>()
+        var followedCount = 0
+        json.sections.forEach { s ->
+            s.groups.forEach { g ->
+                g.hits.forEach { h ->
+                    if (h.isFollowed) {
+                        hits.add(h)
+                        followedCount++
+                        topicAndFollowedDelegate.setFollowedCount(followedCount)
+                    }
                 }
             }
         }
+        return hits
     }
 }

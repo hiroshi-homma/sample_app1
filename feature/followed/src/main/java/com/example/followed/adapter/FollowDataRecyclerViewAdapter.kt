@@ -8,12 +8,10 @@ import com.example.followed.FollowedViewModel
 import com.example.followed.R
 import com.example.followed.adapter.FollowDataRecyclerViewAdapter.FollowDataHolder
 import com.example.followed.databinding.ItemFollowDataViewBinding
-import com.kotlin.project.data.entities.FollowData
-import com.kotlin.project.data.entities.transform
-import javax.inject.Inject
+import com.kotlin.project.data.model.Hit
 
-class FollowDataRecyclerViewAdapter @Inject constructor(
-    private val followData: List<FollowData>,
+class FollowDataRecyclerViewAdapter(
+    private val hits: ArrayList<Hit>,
     private val followedViewModel: FollowedViewModel
 ) : RecyclerView.Adapter<FollowDataHolder>() {
 
@@ -29,14 +27,12 @@ class FollowDataRecyclerViewAdapter @Inject constructor(
         )
     }
 
-    override fun getItemCount() = followData.size
+    override fun getItemCount() = hits.size
 
     override fun onBindViewHolder(holder: FollowDataHolder, position: Int) {
-        holder.binding.hit = followData[position].transform()
-        val ids = followedViewModel.ids.value ?: listOf()
-        val isFollowed = ids.contains(followData[position].id)
+        holder.binding.hit = hits[position]
         holder.binding.checkFollow.apply {
-            isSelected = if (isFollowed) {
+            isSelected = if (hits[position].isFollowed) {
                 setImageResource(R.drawable.ic_baseline_check_circle_24)
                 true
             } else {
@@ -48,16 +44,17 @@ class FollowDataRecyclerViewAdapter @Inject constructor(
                 when {
                     isSelected -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_24)
-                        followedViewModel.insertFollowData(followData[position])
+                        followedViewModel.updateCacheData(
+                            hits[position].copy(isFollowed = isSelected)
+                        )
                     }
                     else -> {
                         setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
-                        followData[position].id?.let {
-                            followedViewModel.deleteFollowDataForId(it)
-                        }
+                        followedViewModel.updateCacheData(
+                            hits[position].copy(isFollowed = isSelected)
+                        )
                     }
                 }
-                followedViewModel.checkData()
             }
         }
     }

@@ -19,6 +19,6 @@ class RoomModule {
 
     @Singleton
     @Provides
-    internal fun provideFollowDataDao(db: MyNewsDatabase) =
-        db.followDataDao()
+    internal fun provideCachedDataDao(db: MyNewsDatabase) =
+        db.cachedDataDao()
 }
