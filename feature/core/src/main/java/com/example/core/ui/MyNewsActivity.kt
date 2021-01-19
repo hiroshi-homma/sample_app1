@@ -69,6 +69,9 @@ class MyNewsActivity : DaggerAppCompatActivity() {
                     navController.navigate(R.id.navigation_topic)
                 }
                 R.id.navigation_followed -> {
+                    if (topicAndFollowedDelegate.isComparisonCount()) {
+                        topicAndFollowedDelegate.setIsUpdateTopic(true)
+                    }
                     navController.navigate(R.id.navigation_followed)
                 }
             }

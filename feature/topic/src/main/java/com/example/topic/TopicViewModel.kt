@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class TopicViewModel @Inject constructor(
@@ -35,6 +34,9 @@ class TopicViewModel @Inject constructor(
     TopicAndFollowedDelegate by topicAndFollowedDelegate {
 
     // state
+    private val _isCacheNull = MutableStateFlow(false)
+    val isCacheNull: StateFlow<Boolean> = _isCacheNull
+
     private val _isDialog = MutableStateFlow(false)
     val isDialog: StateFlow<Boolean> = _isDialog
 
@@ -62,6 +64,10 @@ class TopicViewModel @Inject constructor(
         fetchData(true)
     }
 
+    fun onShowCache() {
+        fetchData()
+    }
+
     fun setIsDialog(isDialog: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             _isDialog.emit(isDialog)
@@ -74,11 +80,13 @@ class TopicViewModel @Inject constructor(
             val data = cachedDataUseCase.getCache()
             when {
                 data != null && isPullToRefresh -> {
+                    _isCacheNull.emit(false)
                     val json =
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
                     fetchApiData(isPullToRefresh, json)
                 }
                 data != null -> {
+                    _isCacheNull.emit(false)
                     val json =
                         Gson().fromJson(data.cacheJsonString, Sections::class.java) as Sections
                     checkFollowedComparison(json)
@@ -86,6 +94,7 @@ class TopicViewModel @Inject constructor(
                     _myStatus.emit(MyNewsStatus.SUCCESS)
                 }
                 else -> {
+                    _isCacheNull.emit(true)
                     fetchApiData()
                     _myStatus.emit(MyNewsStatus.ERROR)
                 }
@@ -125,18 +134,15 @@ class TopicViewModel @Inject constructor(
 
     fun updateCacheData(sp: Int, gp: Int, hp: Int, hit: Hit) {
         val updateData = sections.replayCache.toMutableList()
-        updateData.forEach { s ->
-            s[sp].groups[gp].hits[hp] = hit
-        }
+        updateData.forEach { s -> s[sp].groups[gp].hits[hp] = hit }
         val jsonString = Gson().toJson(Sections(updateData[0])) as String
         viewModelScope.launch(Dispatchers.IO) {
             cachedDataUseCase.updateCache(1L, jsonString)
+            topicAndFollowedDelegate.setIsUpdateFollowed(true)
         }
-        topicAndFollowedDelegate.setIsUpdateFollowed(true)
     }
 
     private fun refreshCacheData(changeSections: Sections, cacheSections: Sections) {
-        Timber.d("check_data1:$changeSections")
         cacheSections.sections.forEach { s ->
             s.groups.forEach { g ->
                 g.hits.forEach { h ->
