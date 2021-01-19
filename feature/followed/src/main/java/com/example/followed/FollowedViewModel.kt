@@ -77,8 +77,8 @@ class FollowedViewModel @Inject constructor(
         val jsonString = Gson().toJson(Sections(updateData[0])) as String
         viewModelScope.launch(Dispatchers.IO) {
             cachedDataUseCase.updateCache(1L, jsonString)
+            topicAndFollowedDelegate.setIsUpdateTopic(true)
         }
-        topicAndFollowedDelegate.setIsUpdateTopic(true)
     }
 
     private fun createHits(json: Sections): ArrayList<Hit> {

@@ -6,5 +6,6 @@
     <string name="close_app">もう一度押すとアプリを終了します。</string>
 
     <string name="network_check">ネットワークとの接続が確認できず、データが取得できておりません。</string>
-    <string name="move_setting">ネットワーク設定に移動</string>
+    <string name="show_cache">既存を表示</string>
+    <string name="move_setting">設定に移動</string>
 </resources>

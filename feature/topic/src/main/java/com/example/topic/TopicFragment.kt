@@ -97,14 +97,28 @@ class TopicFragment @Inject constructor() : Fragment() {
     private fun netWorkCheckDialog() {
         context?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(R.string.network_check)
-                .setCancelable(false)
-                .setPositiveButton(R.string.move_setting) { _, _ ->
-                    val intent = Intent()
-                    intent.action = ACTION_AIRPLANE_MODE_SETTINGS
-                    startActivity(intent)
-                }
-            builder.create().show()
+            if (topicViewModel.isCacheNull.value) {
+                builder.setMessage(R.string.network_check)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.move_setting) { _, _ ->
+                        val intent = Intent()
+                        intent.action = ACTION_AIRPLANE_MODE_SETTINGS
+                        startActivity(intent)
+                    }
+                builder.create().show()
+            } else {
+                builder.setMessage(R.string.network_check)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.show_cache) { _, _ ->
+                        topicViewModel.onShowCache()
+                    }
+                    .setNegativeButton(R.string.move_setting) { _, _ ->
+                        val intent = Intent()
+                        intent.action = ACTION_AIRPLANE_MODE_SETTINGS
+                        startActivity(intent)
+                    }
+                builder.create().show()
+            }
         }
     }
 }
