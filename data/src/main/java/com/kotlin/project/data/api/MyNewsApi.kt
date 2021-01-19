@@ -4,6 +4,6 @@ import com.kotlin.project.data.model.Sections
 import retrofit2.http.GET
 
 interface MyNewsApi {
-    @GET("followables.json")
+    @GET("test_list.json")
     suspend fun getNews(): Sections
 }

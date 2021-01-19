@@ -18,7 +18,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideTimeLineApi(): MyNewsApi {
+    fun provideMyNewsApi(): MyNewsApi {
         val gson = GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create()

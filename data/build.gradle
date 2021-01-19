@@ -24,7 +24,7 @@ android {
             debuggable true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "DOMAIN", "\"https://deeplink.dev.n8s.jp/quiz/\""
+            buildConfigField "String", "DOMAIN", "\"http://tk2-246-32569.vs.sakura.ne.jp/test_news/\""
             buildConfigField "Long", "API_READ_TIMEOUT", "120L"
             buildConfigField "Long", "API_CONNECT_TIMEOUT", "120L"
         }
@@ -32,7 +32,7 @@ android {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "DOMAIN", "\"https://deeplink.dev.n8s.jp/quiz/\""
+            buildConfigField "String", "DOMAIN", "\"http://tk2-246-32569.vs.sakura.ne.jp/test_news/\""
             buildConfigField "Long", "API_READ_TIMEOUT", "120L"
             buildConfigField "Long", "API_CONNECT_TIMEOUT", "120L"
         }
