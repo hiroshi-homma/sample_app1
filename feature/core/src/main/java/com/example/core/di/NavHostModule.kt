@@ -1,6 +1,6 @@
-package com.example.news.di
+package com.example.core.di
 
-import com.example.news.InjectingNavHostFragment
+import com.example.core.InjectingNavHostFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

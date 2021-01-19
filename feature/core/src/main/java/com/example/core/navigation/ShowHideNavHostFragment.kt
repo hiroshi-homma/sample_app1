@@ -1,4 +1,4 @@
-package com.example.news.navigation
+package com.example.core.navigation
 
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator

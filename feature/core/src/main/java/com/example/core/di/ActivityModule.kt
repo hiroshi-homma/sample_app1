@@ -1,11 +1,11 @@
-package com.example.news.di
+package com.example.core.di
 
 import com.example.core.ui.MyNewsActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-internal abstract class ActivityModule {
+abstract class ActivityModule {
     @ContributesAndroidInjector
     abstract fun contributeMyNewsActivity(): MyNewsActivity
 }

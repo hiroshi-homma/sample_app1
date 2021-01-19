@@ -1,4 +1,4 @@
-package com.example.news.di
+package com.example.core.di
 
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds

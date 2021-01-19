@@ -1,4 +1,4 @@
-package com.example.news.navigation
+package com.example.core.navigation
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
-import com.example.news.R
+import com.example.core.R
 
 @Navigator.Name("show_hide_fragment")
 class ShowHideFragmentNavigator(

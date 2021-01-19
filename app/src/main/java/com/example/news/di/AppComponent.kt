@@ -1,7 +1,11 @@
 package com.example.news.di
 
 import android.app.Application
+import com.example.core.di.ActivityModule
 import com.example.core.di.DelegateModule
+import com.example.core.di.FragmentModule
+import com.example.core.di.NavHostModule
+import com.example.core.di.ViewModelModule
 import com.example.followed.FollowedModule
 import com.example.news.MainApplication
 import com.example.topic.TopicModule

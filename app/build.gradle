@@ -77,10 +77,7 @@ dependencies {
     testImplementation "io.mockk:mockk-android:$mockkVersion"
     testImplementation "androidx.arch.core:core-testing:$core_testing"
     testImplementation "com.google.truth:truth:$truth"
-    // UI Test
-    androidTestImplementation "junit:junit:$junit"
-    androidTestImplementation "androidx.test.ext:junit:$androidxJunit"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCore"
+
     // Log
     implementation "com.jakewharton.timber:timber:$timber"
 }

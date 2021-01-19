@@ -1,4 +1,4 @@
-package com.example.news.di
+package com.example.core.di
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory

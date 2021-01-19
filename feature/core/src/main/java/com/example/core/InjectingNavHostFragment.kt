@@ -1,9 +1,9 @@
-package com.example.news
+package com.example.core
 
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.FragmentFactory
-import com.example.news.navigation.ShowHideNavHostFragment
+import com.example.core.navigation.ShowHideNavHostFragment
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
