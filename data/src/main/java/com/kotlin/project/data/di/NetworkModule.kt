@@ -27,7 +27,9 @@ object NetworkModule {
             .readTimeout(BuildConfig.API_READ_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
+                    if (BuildConfig.DEBUG) {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    }
                 }
             )
             .build()

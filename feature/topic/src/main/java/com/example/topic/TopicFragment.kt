@@ -51,13 +51,6 @@ class TopicFragment @Inject constructor() : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        topicViewModel.isDialog.value.let {
-            if (it) topicViewModel.onRefresh()
-        }
-    }
-
     private fun observe() {
         topicViewModel.isUpdateTopic.observe(viewLifecycleOwner) {
             topicViewModel.onRefresh()
@@ -110,6 +103,7 @@ class TopicFragment @Inject constructor() : Fragment() {
                 builder.setMessage(R.string.network_check)
                     .setCancelable(false)
                     .setPositiveButton(R.string.show_cache) { _, _ ->
+                        topicViewModel.setIssNeverShowDialog(true)
                         topicViewModel.onShowCache()
                     }
                     .setNegativeButton(R.string.move_setting) { _, _ ->

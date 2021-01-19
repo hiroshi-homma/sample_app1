@@ -40,6 +40,9 @@ class TopicViewModel @Inject constructor(
     private val _isDialog = MutableStateFlow(false)
     val isDialog: StateFlow<Boolean> = _isDialog
 
+    private val _isNeverShowDialog = MutableStateFlow(false)
+    val isNeverShowDialog: StateFlow<Boolean> = _isNeverShowDialog
+
     // event
     private val _myStatus = MutableSharedFlow<MyNewsStatus>(
         replay = 1, onBufferOverflow = DROP_OLDEST
@@ -66,6 +69,12 @@ class TopicViewModel @Inject constructor(
 
     fun onShowCache() {
         fetchData()
+    }
+
+    fun setIssNeverShowDialog(neverShowDialog: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isNeverShowDialog.emit(neverShowDialog)
+        }
     }
 
     fun setIsDialog(isDialog: Boolean) {
@@ -116,7 +125,9 @@ class TopicViewModel @Inject constructor(
                     }
                 }
                 is Result.Error -> {
-                    _action.emit(ShowNetWorkCheckDialog)
+                    if (!isNeverShowDialog.value) {
+                        _action.emit(ShowNetWorkCheckDialog)
+                    }
                     _myStatus.emit(MyNewsStatus.ERROR)
                 }
             }
