@@ -49,152 +49,152 @@ object TestData {
         cacheJsonString = "{\n" +
             "    \"sections\": [\n" +
             "        {\n" +
-            "            \"title\": \"人気のトピック\",\n" +
+            "            \"title\": \"TopicA\",\n" +
             "            \"groups\": [\n" +
             "                {\n" +
             "                    \"title\": null,\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"topic_DF_TE_17101907\",\n" +
-            "                            \"label\": \"自動運転\",\n" +
-            "                            \"type\": \"topic\",\n" +
-            "                            \"followers_count\": 5337\n" +
+            "                            \"id\": \"id_test_A1\",\n" +
+            "                            \"label\": \"Test_Topic1\",\n" +
+            "                            \"type\": \"topicA\",\n" +
+            "                            \"followers_count\": 1000\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"technology_DF_SECF_C4____\",\n" +
-            "                            \"label\": \"フィンテック\",\n" +
-            "                            \"type\": \"topic\",\n" +
-            "                            \"followers_count\": 19198\n" +
+            "                            \"id\": \"id_test_A2\",\n" +
+            "                            \"label\": \"Test_Topic2\",\n" +
+            "                            \"type\": \"topicA\",\n" +
+            "                            \"followers_count\": 2000\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"technology_DF_SECF_C1____\",\n" +
-            "                            \"label\": \"AI\",\n" +
-            "                            \"type\": \"topic\",\n" +
-            "                            \"followers_count\": 30884\n" +
+            "                            \"id\": \"id_test_A3\",\n" +
+            "                            \"label\": \"Test_Topic3\",\n" +
+            "                            \"type\": \"topicA\",\n" +
+            "                            \"followers_count\": 3000\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"technology_DF_SECF_C2____\",\n" +
-            "                            \"label\": \"IoT\",\n" +
-            "                            \"type\": \"topic\",\n" +
-            "                            \"followers_count\": 5133\n" +
+            "                            \"id\": \"id_test_A4\",\n" +
+            "                            \"label\": \"Test_Topic4\",\n" +
+            "                            \"type\": \"topicA\",\n" +
+            "                            \"followers_count\": 4000\n" +
             "                        }\n" +
             "                    ]\n" +
             "                }\n" +
             "            ]\n" +
             "        },\n" +
             "        {\n" +
-            "            \"title\": \"注目の企業\",\n" +
+            "            \"title\": \"TopicB\",\n" +
             "            \"groups\": [\n" +
             "                {\n" +
-            "                    \"title\": \"銀行\",\n" +
+            "                    \"title\": \"TopicB_Title1\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0071006\",\n" +
-            "                            \"label\": \"みずほフィナンシャルグループ\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title1_1\",\n" +
+            "                            \"label\": \"Test_Topic5\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 4612\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0070182\",\n" +
-            "                            \"label\": \"三菱ＵＦＪフィナンシャル・グループ\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title1_2\",\n" +
+            "                            \"label\": \"Test_Topic6\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 5093\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0070190\",\n" +
-            "                            \"label\": \"りそなホールディングス\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title1_3\",\n" +
+            "                            \"label\": \"Test_Topic7\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 1284\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0071004\",\n" +
-            "                            \"label\": \"三井住友フィナンシャルグループ\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title1_4\",\n" +
+            "                            \"label\": \"Test_Topic8\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2574\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"空運\",\n" +
+            "                    \"title\": \"TopicB_Title2\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0001941\",\n" +
-            "                            \"label\": \"日本航空\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title2_1\",\n" +
+            "                            \"label\": \"Test_Topic9\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2296\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001942\",\n" +
-            "                            \"label\": \"ＡＮＡホールディングス\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title2_2\",\n" +
+            "                            \"label\": \"Test_Topic10\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2526\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"保険\",\n" +
+            "                    \"title\": \"TopicB_Title3\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0070505\",\n" +
-            "                            \"label\": \"損害保険ジャパン日本興亜\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title3_1\",\n" +
+            "                            \"label\": \"Test_Topic11\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 1684\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0070501\",\n" +
-            "                            \"label\": \"東京海上日動火災保険\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title3_2\",\n" +
+            "                            \"label\": \"Test_Topic12\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 1934\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"総合商社\",\n" +
+            "                    \"title\": \"TopicB_Title4\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0001592\",\n" +
-            "                            \"label\": \"三菱商事\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title4_1\",\n" +
+            "                            \"label\": \"Test_Topic13\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 3375\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001551\",\n" +
-            "                            \"label\": \"伊藤忠商事\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title4_2\",\n" +
+            "                            \"label\": \"Test_Topic14\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 3302\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001574\",\n" +
-            "                            \"label\": \"三井物産\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title4_3\",\n" +
+            "                            \"label\": \"Test_Topic15\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2944\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001588\",\n" +
-            "                            \"label\": \"住友商事\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title4_4\",\n" +
+            "                            \"label\": \"Test_Topic16\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2182\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"自動車\",\n" +
+            "                    \"title\": \"TopicB_Title5\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0001353\",\n" +
-            "                            \"label\": \"トヨタ自動車\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title5_1\",\n" +
+            "                            \"label\": \"Test_Topic17\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 12931\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001351\",\n" +
-            "                            \"label\": \"日産自動車\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title5_2\",\n" +
+            "                            \"label\": \"Test_Topic18\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 3653\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0007267\",\n" +
-            "                            \"label\": \"ホンダ\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title5_3\",\n" +
+            "                            \"label\": \"Test_Topic19\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2700\n" +
             "                        }\n" +
@@ -202,121 +202,121 @@ object TestData {
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"情報機器・通信機器\",\n" +
+            "                    \"title\": \"TopicB_Title6\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0000638\",\n" +
-            "                            \"label\": \"富士フイルムホールディングス\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title6_1\",\n" +
+            "                            \"label\": \"Test_Topic20\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2795\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001458\",\n" +
-            "                            \"label\": \"キヤノン\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title6_2\",\n" +
+            "                            \"label\": \"Test_Topic21\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2953\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"総合小売・食料品小売\",\n" +
+            "                    \"title\": \"TopicB_Title7\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0031087\",\n" +
-            "                            \"label\": \"セブン＆アイ・ホールディングス\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title7_1\",\n" +
+            "                            \"label\": \"Test_Topic22\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2526\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001683\",\n" +
-            "                            \"label\": \"イオン\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title7_2\",\n" +
+            "                            \"label\": \"Test_Topic23\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2305\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"産業用装置・重電設備\",\n" +
+            "                    \"title\": \"TopicB_Title8\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0001325\",\n" +
-            "                            \"label\": \"三菱重工業\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title8_1\",\n" +
+            "                            \"label\": \"Test_Topic24\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2268\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001683\",\n" +
-            "                            \"label\": \"イオン\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title8_2\",\n" +
+            "                            \"label\": \"Test_Topic25\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2305\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"家庭用電気機器\",\n" +
+            "                    \"title\": \"TopicB_Title9\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0006752\",\n" +
-            "                            \"label\": \"パナソニック\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title9_1\",\n" +
+            "                            \"label\": \"Test_Topic26\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 9412\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001213\",\n" +
-            "                            \"label\": \"ソニー\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title9_2\",\n" +
+            "                            \"label\": \"Test_Topic27\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 6875\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001161\",\n" +
-            "                            \"label\": \"日立製作所\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title9_3\",\n" +
+            "                            \"label\": \"Test_Topic28\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 4239\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001191\",\n" +
-            "                            \"label\": \"富士通\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title9_4\",\n" +
+            "                            \"label\": \"Test_Topic29\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2441\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0001162\",\n" +
-            "                            \"label\": \"東芝\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title9_5\",\n" +
+            "                            \"label\": \"Test_Topic30\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 8878\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0006503\",\n" +
-            "                            \"label\": \"三菱電機\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title9_6\",\n" +
+            "                            \"label\": \"Test_Topic31\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2302\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0006701\",\n" +
-            "                            \"label\": \"NEC\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title9_7\",\n" +
+            "                            \"label\": \"Test_Topic32\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2100\n" +
             "                        }\n" +
             "                    ]\n" +
             "                },\n" +
             "                {\n" +
-            "                    \"title\": \"通信サービス\",\n" +
+            "                    \"title\": \"TopicB_Title10\",\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"0015926\",\n" +
-            "                            \"label\": \"ソフトバンクグループ\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title10_1\",\n" +
+            "                            \"label\": \"Test_Topic33\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 6608\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0017488\",\n" +
-            "                            \"label\": \"NTTドコモ\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title10_2\",\n" +
+            "                            \"label\": \"Test_Topic34\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 2553\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"0004111\",\n" +
-            "                            \"label\": \"KDDI\",\n" +
+            "                            \"id\": \"id_test_TopicB_Title10_3\",\n" +
+            "                            \"label\": \"Test_Topic35\",\n" +
             "                            \"type\": \"company\",\n" +
             "                            \"followers_count\": 1111\n" +
             "                        }\n" +
@@ -325,32 +325,32 @@ object TestData {
             "            ]\n" +
             "        },\n" +
             "        {\n" +
-            "            \"title\": \"人気のコラム\",\n" +
+            "            \"title\": \"TopicC\",\n" +
             "            \"groups\": [\n" +
             "                {\n" +
             "                    \"title\": null,\n" +
             "                    \"hits\": [\n" +
             "                        {\n" +
-            "                            \"id\": \"topic_DF_TB_17090318\",\n" +
-            "                            \"label\": \"ニュースこう読む\",\n" +
+            "                            \"id\": \"id_test_TopicC_Title10_1\",\n" +
+            "                            \"label\": \"Test_Topic36\",\n" +
             "                            \"type\": \"topic\",\n" +
             "                            \"followers_count\": 57767\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"culture_DF_SECH_C3____\",\n" +
-            "                            \"label\": \"私の履歴書\",\n" +
+            "                            \"id\": \"id_test_TopicC_Title10_2\",\n" +
+            "                            \"label\": \"Test_Topic37\",\n" +
             "                            \"type\": \"topic\",\n" +
             "                            \"followers_count\": 119340\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"topic_DF_TB_17092100\",\n" +
-            "                            \"label\": \"やさしい経済学\",\n" +
+            "                            \"id\": \"id_test_TopicC_Title10_3\",\n" +
+            "                            \"label\": \"Test_Topic38\",\n" +
             "                            \"type\": \"topic\",\n" +
             "                            \"followers_count\": 36363\n" +
             "                        },\n" +
             "                        {\n" +
-            "                            \"id\": \"wappen_44GN44KH44GG44Gu44GT44Go44Gw\",\n" +
-            "                            \"label\": \"きょうのことば\",\n" +
+            "                            \"id\": \"id_test_TopicC_Title10_4\",\n" +
+            "                            \"label\": \"Test_Topic39\",\n" +
             "                            \"type\": \"topic\",\n" +
             "                            \"followers_count\": 36410\n" +
             "                        }\n" +

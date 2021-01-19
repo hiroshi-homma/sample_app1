@@ -13,7 +13,7 @@ class RoomModule {
     @Singleton
     @Provides
     internal fun provideMyNewsDatabase(app: Application): MyNewsDatabase =
-        Room.databaseBuilder(app, MyNewsDatabase::class.java, "park.db")
+        Room.databaseBuilder(app, MyNewsDatabase::class.java, "my_news.db")
             .fallbackToDestructiveMigration()
             .build()
 
