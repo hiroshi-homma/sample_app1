@@ -1,8 +1,3 @@
-# NikkeiAndroidQuiz_Honma
-
-クイズ for Android  
-https://nikkeidevs.kibe.la/shared/entries/ebcae9e2-c9c1-4a91-a0dc-702f36721333
-
 ### 使用ライブラリ
  - support library
  
