@@ -66,7 +66,7 @@
 
 ### 設計 MultiModule
 
-<img src="http://tk2-246-32569.vs.sakura.ne.jp/multi_module_image2.png"/>
+<img src="http://tk2-246-32569.vs.sakura.ne.jp/multi_module_image3.png"/>
 
 - 設計手法の選定理由
 画面単位、通信単位、モデル単位で開発ができるようにしたかったため選定しました。
